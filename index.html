@@ -2,10 +2,28 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Expose Tool</title>
+  <title>ExposePilot</title>
 </head>
 <body>
-  <h1>Expose Tool – Startseite</h1>
-  <p>Setup erfolgreich.</p>
+  <p>Weiterleitung...</p>
+
+  <script>
+  // Prüfen, ob Nutzer eingeloggt ist
+  fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
+    credentials: "include"
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.logged_in) {
+        window.location.href = "dashboard.html";
+      } else {
+        window.location.href = "login.html";
+      }
+    })
+    .catch(() => {
+      // Wenn irgendwas crasht -> Loginseite
+      window.location.href = "login.html";
+    });
+  </script>
 </body>
 </html>
