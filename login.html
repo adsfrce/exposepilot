@@ -5,16 +5,45 @@
   <title>ExposePilot Login</title>
 </head>
 <body>
-  <h1>ExposePilot Login</h1>
+  <h1>ExposePilot – Login</h1>
 
   <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="password" placeholder="Passwort" required><br><br>
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+
+    <label>Passwort:</label><br>
+    <input type="password" id="password" required><br><br>
+
     <button type="submit">Login</button>
   </form>
 
   <p id="error" style="color:red;"></p>
 
-  <script src="login.js"></script>
+  <p>Noch kein Account? <a href="register.html">Jetzt registrieren</a></p>
+
+  <script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      document.getElementById("error").textContent = data.error || "Login fehlgeschlagen.";
+      return;
+    }
+
+    window.location.href = "dashboard.html";
+  });
+  </script>
 </body>
 </html>
