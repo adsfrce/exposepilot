@@ -23,7 +23,7 @@
   </script>
 
   <h1 id="welcome">Dashboard wird geladen...</h1>
-  <p>Dies ist das ExposePilot Backend. (Wir designen das später schön.)</p>
+  <p>Dies ist das ExposePilot Backend. (Design machen wir später schön.)</p>
 
   <!-- BRANDING -->
   <h2>Branding</h2>
@@ -46,7 +46,6 @@
 
   <!-- EXPOSÉ ERSTELLEN -->
   <h2>Neues Exposé</h2>
-
   <form id="exposeForm">
     <label>Titel:</label><br>
     <input type="text" id="expose_title"><br><br>
@@ -73,19 +72,38 @@
 
   <hr>
 
-  <h2>Meine Exposés</h2>
+  <h2>Meine Exposés (klicken, um Bilder hochzuladen)</h2>
   <ul id="exposeList"></ul>
+
+  <hr>
+
+  <!-- BILDERUPLOAD -->
+  <h2>Bilder für Exposé</h2>
+  <p>Aktives Exposé: <span id="activeExposeId">keins</span></p>
+
+  <div id="dropZone" style="border:1px dashed #666; padding:20px; max-width:400px; margin-bottom:10px;">
+    Bilder hier per Drag & Drop ablegen oder Button nutzen.
+  </div>
+
+  <button id="selectImagesBtn">Bilder auswählen</button>
+  <input type="file" id="imageFiles" multiple style="display:none">
+  <button id="uploadImagesBtn">Bilder hochladen</button>
+
+  <p id="uploadStatus" style="color:green;"></p>
+
+  <h3>Hochgeladene Bilder</h3>
+  <ul id="imageList"></ul>
 
   <p><a href="logout.html">Logout</a></p>
 
-  <!-- BRANDING & EXPOSE SCRIPTS -->
+  <!-- SCRIPT -->
   <script>
+  // Branding
   async function loadBranding() {
     const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/get", {
       credentials: "include"
     });
     const data = await res.json();
-
     if (!data.logged_in) return;
 
     document.getElementById("company_name").value = data.user.company_name || "";
@@ -115,8 +133,11 @@
 
   loadBranding();
 
+  // ===== Exposé + Bilder =====
+  let activeExposeId = null;
+  let uploadFiles = [];
 
-  // EXPOSE CREATE
+  // Exposé erstellen
   document.getElementById("exposeForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -145,7 +166,6 @@
     }
   });
 
-  // LIST LOAD
   async function loadExposeList() {
     const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/list", {
       credentials: "include"
@@ -158,10 +178,112 @@
     data.exposes.forEach(exp => {
       const li = document.createElement("li");
       li.textContent = exp.title + " (ID: " + exp.id + ")";
+      li.style.cursor = "pointer";
+      li.addEventListener("click", () => {
+        setActiveExpose(exp.id);
+      });
       list.appendChild(li);
     });
   }
 
+  function setActiveExpose(id) {
+    activeExposeId = id;
+    document.getElementById("activeExposeId").textContent = id;
+    loadImages();
+  }
+
+  // Drag & Drop / File select
+  const dropZone = document.getElementById("dropZone");
+  const imageInput = document.getElementById("imageFiles");
+  const selectBtn = document.getElementById("selectImagesBtn");
+  const uploadBtn = document.getElementById("uploadImagesBtn");
+  const uploadStatus = document.getElementById("uploadStatus");
+
+  function renderSelectedFiles() {
+    if (!uploadFiles.length) {
+      uploadStatus.textContent = "";
+      return;
+    }
+    uploadStatus.textContent = uploadFiles.length + " Datei(en) ausgewählt.";
+  }
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.backgroundColor = "#f3f4f6";
+  });
+
+  dropZone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    dropZone.style.backgroundColor = "transparent";
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.style.backgroundColor = "transparent";
+    uploadFiles = Array.from(e.dataTransfer.files);
+    renderSelectedFiles();
+  });
+
+  selectBtn.addEventListener("click", () => {
+    imageInput.click();
+  });
+
+  imageInput.addEventListener("change", (e) => {
+    uploadFiles = Array.from(e.target.files);
+    renderSelectedFiles();
+  });
+
+  uploadBtn.addEventListener("click", async () => {
+    if (!activeExposeId) {
+      alert("Bitte zuerst ein Exposé in der Liste auswählen.");
+      return;
+    }
+    if (!uploadFiles.length) {
+      alert("Keine Dateien ausgewählt.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("expose_id", activeExposeId);
+    uploadFiles.forEach(file => formData.append("files", file));
+
+    uploadStatus.textContent = "Upload läuft...";
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/upload", {
+      method: "POST",
+      credentials: "include",
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      uploadStatus.textContent = "Upload abgeschlossen (" + data.saved + " Dateien).";
+      uploadFiles = [];
+      imageInput.value = "";
+      loadImages();
+    } else {
+      uploadStatus.textContent = data.error || "Fehler beim Upload.";
+    }
+  });
+
+  async function loadImages() {
+    if (!activeExposeId) return;
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/images?expose_id=" + activeExposeId, {
+      credentials: "include"
+    });
+    const data = await res.json();
+
+    const list = document.getElementById("imageList");
+    list.innerHTML = "";
+
+    (data.images || []).forEach(img => {
+      const li = document.createElement("li");
+      li.textContent = img.filename + " (ID: " + img.id + ")";
+      list.appendChild(li);
+    });
+  }
+
+  // initial
   loadExposeList();
   </script>
 
