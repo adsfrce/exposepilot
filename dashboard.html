@@ -61,53 +61,52 @@
       text-decoration: none;
     }
 
-  .page {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-    /* Vollflächiges Hero-Bild mit identischem Fade wie Noventum */
-.page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("hero.jpg"); /* Datei ins gleiche Verzeichnis legen */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: var(--hero-image-opacity);
-  pointer-events: none;
-  z-index: -2;
-}
+    /* Vollflächiges Hero-Bild mit Fade */
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("hero.jpg"); /* Datei ins gleiche Verzeichnis legen */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: var(--hero-image-opacity);
+      pointer-events: none;
+      z-index: -2;
+    }
 
-.page::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(245, 245, 247, 1.0) 0%,
-    rgba(245, 245, 247, 0.85) 25%,
-    rgba(245, 245, 247, 0.55) 55%,
-    rgba(245, 245, 247, 0.00) 100%
-  );
-  pointer-events: none;
-  z-index: -1;
-}
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(245, 245, 247, 1.0) 0%,
+        rgba(245, 245, 247, 0.85) 25%,
+        rgba(245, 245, 247, 0.55) 55%,
+        rgba(245, 245, 247, 0.00) 100%
+      );
+      pointer-events: none;
+      z-index: -1;
+    }
 
-/* Dark-Mode-Variante: etwas dunklerer Fade */
-[data-theme="dark"] .page::after {
-  background: linear-gradient(
-    to top,
-    rgba(2, 6, 23, 1.0) 0%,
-    rgba(2, 6, 23, 0.9) 25%,
-    rgba(2, 6, 23, 0.6) 55%,
-    rgba(2, 6, 23, 0.0) 100%
-  );
-}
+    [data-theme="dark"] .page::after {
+      background: linear-gradient(
+        to top,
+        rgba(2, 6, 23, 1.0) 0%,
+        rgba(2, 6, 23, 0.9) 25%,
+        rgba(2, 6, 23, 0.6) 55%,
+        rgba(2, 6, 23, 0.0) 100%
+      );
+    }
 
     .container {
       width: 100%;
@@ -296,7 +295,11 @@
       display: block;
     }
 
-    /* User-Pill */
+    /* User-Pill + Dropdown */
+
+    .user-wrapper {
+      position: relative;
+    }
 
     .user-pill {
       display: inline-flex;
@@ -309,57 +312,41 @@
       backdrop-filter: blur(16px);
       cursor: pointer;
     }
-    
-.user-wrapper {
-  position: relative;
-}
 
-.user-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: var(--radius-pill);
-  padding: 4px 10px 4px 6px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: var(--bg-glass-soft);
-  backdrop-filter: blur(16px);
-  cursor: pointer;
-}
+    .user-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      min-width: 160px;
+      border-radius: 16px;
+      background: var(--bg-glass);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      padding: 6px;
+      display: none;
+      z-index: 60;
+    }
 
-/* Dropdown-Menü */
-.user-menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  min-width: 160px;
-  border-radius: 16px;
-  background: var(--bg-glass);
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
-  padding: 6px;
-  display: none;
-  z-index: 60;
-}
+    .user-menu.is-open {
+      display: block;
+    }
 
-.user-menu.is-open {
-  display: block;
-}
+    .user-menu-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
 
-.user-menu-item {
-  width: 100%;
-  border: none;
-  background: transparent;
-  text-align: left;
-  font-size: 13px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  cursor: pointer;
-  color: var(--text-main);
-}
+    .user-menu-item:hover {
+      background: rgba(148, 163, 184, 0.15);
+    }
 
-.user-menu-item:hover {
-  background: rgba(148, 163, 184, 0.15);
-}
     .user-avatar {
       width: 28px;
       height: 28px;
@@ -397,7 +384,7 @@
 
     main {
       flex: 1;
-      padding: 120px 0 44px; /* mehr Abstand nach oben */
+      padding: 120px 0 44px; /* Abstand zur Menüleiste */
     }
 
     .dashboard-layout {
@@ -445,7 +432,7 @@
       z-index: 1;
       display: flex;
       flex-direction: column;
-      align-items: center; /* mittig */
+      align-items: center;
       gap: 18px;
     }
 
@@ -589,7 +576,6 @@
           <span class="theme-toggle-label">MODE</span>
           <span class="theme-toggle-track">
             <span class="theme-toggle-knob">
-              <!-- Sonne / Mond als SVG, keine Emojis -->
               <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
               </svg>
@@ -600,12 +586,20 @@
           </span>
         </button>
 
-        <!-- User-Pill mit Daten aus /me (Klick -> Logout) -->
-        <div class="user-pill" id="userPill" title="Abmelden">
-          <div class="user-avatar" id="userAvatar">EP</div>
-          <div class="user-meta">
-            <div class="user-name" id="userName">Konto</div>
-            <div class="user-email" id="userEmail"></div>
+        <!-- User-Pill mit Dropdown-Menü -->
+        <div class="user-wrapper">
+          <button class="user-pill" id="userPill" type="button">
+            <div class="user-avatar" id="userAvatar">EP</div>
+            <div class="user-meta">
+              <div class="user-name" id="userName">Konto</div>
+              <div class="user-email" id="userEmail"></div>
+            </div>
+          </button>
+
+          <div class="user-menu" id="userMenu">
+            <button type="button" class="user-menu-item" id="logoutBtn">
+              Abmelden
+            </button>
           </div>
         </div>
       </div>
@@ -627,21 +621,21 @@
         const companyName = data.user.company_name || "Ihr Unternehmen";
         const email = data.user.email || "";
 
-// Dynamische Begrüßung (Morgen / Tag / Abend)
-function getGreetingByHour(hour) {
-  if (hour >= 5 && hour < 11) return "Guten Morgen";
-  if (hour >= 11 && hour < 18) return "Guten Tag";
-  return "Guten Abend";
-}
+        // Dynamische Begrüßung (Morgen / Tag / Abend)
+        function getGreetingByHour(hour) {
+          if (hour >= 5 && hour < 11) return "Guten Morgen";
+          if (hour >= 11 && hour < 18) return "Guten Tag";
+          return "Guten Abend";
+        }
 
-const now = new Date();
-const hour = now.getHours();
-const greeting = getGreetingByHour(hour);
+        const now = new Date();
+        const hour = now.getHours();
+        const greeting = getGreetingByHour(hour);
 
-const welcomeEl = document.getElementById("welcomeHeadline");
-if (welcomeEl) {
-  welcomeEl.textContent = greeting + ", " + companyName;
-}
+        const welcomeEl = document.getElementById("welcomeHeadline");
+        if (welcomeEl) {
+          welcomeEl.textContent = greeting + ", " + companyName;
+        }
 
         const userNameEl = document.getElementById("userName");
         const userEmailEl = document.getElementById("userEmail");
@@ -723,7 +717,6 @@ if (welcomeEl) {
     if (stored === "light" || stored === "dark") {
       applyTheme(stored);
     } else {
-      // Standard: Light Mode, unabhängig vom System
       applyTheme("light");
     }
   }
@@ -743,7 +736,6 @@ if (welcomeEl) {
 
   if (newExposeBtn) {
     newExposeBtn.addEventListener("click", () => {
-      // Seite für das Anlegen eines neuen Exposés (nur über diesen Button erreichbar)
       window.location.href = "expose.html";
     });
   }
@@ -754,10 +746,28 @@ if (welcomeEl) {
     });
   }
 
-  // User-Pill klick -> Logout
+  // User-Dropdown
   const userPill = document.getElementById("userPill");
-  if (userPill) {
-    userPill.addEventListener("click", () => {
+  const userMenu = document.getElementById("userMenu");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (userPill && userMenu) {
+    userPill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userMenu.classList.toggle("is-open");
+    });
+
+    document.addEventListener("click", () => {
+      userMenu.classList.remove("is-open");
+    });
+
+    userMenu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
       window.location.href = "logout.html";
     });
   }
