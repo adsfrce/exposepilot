@@ -23,6 +23,7 @@
       --radius-lg: 26px;
       --radius-pill: 999px;
       --nav-height: 70px;
+      --hero-image-opacity: 0.5;
     }
 
     [data-theme="dark"] {
@@ -60,11 +61,53 @@
       text-decoration: none;
     }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  .page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+    /* Vollflächiges Hero-Bild mit identischem Fade wie Noventum */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("hero.jpg"); /* Datei ins gleiche Verzeichnis legen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--hero-image-opacity);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(245, 245, 247, 1.0) 0%,
+    rgba(245, 245, 247, 0.85) 25%,
+    rgba(245, 245, 247, 0.55) 55%,
+    rgba(245, 245, 247, 0.00) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Dark-Mode-Variante: etwas dunklerer Fade */
+[data-theme="dark"] .page::after {
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 1.0) 0%,
+    rgba(2, 6, 23, 0.9) 25%,
+    rgba(2, 6, 23, 0.6) 55%,
+    rgba(2, 6, 23, 0.0) 100%
+  );
+}
 
     .container {
       width: 100%;
@@ -264,9 +307,59 @@
       border: 1px solid rgba(148, 163, 184, 0.7);
       background: var(--bg-glass-soft);
       backdrop-filter: blur(16px);
-      cursor: pointer; /* Klick zum Logout */
+      cursor: pointer;
     }
+    
+.user-wrapper {
+  position: relative;
+}
 
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px 4px 6px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: var(--bg-glass-soft);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+/* Dropdown-Menü */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 160px;
+  border-radius: 16px;
+  background: var(--bg-glass);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  padding: 6px;
+  display: none;
+  z-index: 60;
+}
+
+.user-menu.is-open {
+  display: block;
+}
+
+.user-menu-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.user-menu-item:hover {
+  background: rgba(148, 163, 184, 0.15);
+}
     .user-avatar {
       width: 28px;
       height: 28px;
