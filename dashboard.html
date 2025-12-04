@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot Dashboard</title>
+</head>
+<body>
+
+  <!-- Session Check -->
+  <script>
+  fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
+    credentials: "include"
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.logged_in) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      document.getElementById("welcome").textContent =
+        "Willkommen, " + data.user.company_name;
+    });
+  </script>
+
+  <h1 id="welcome">Dashboard wird geladen...</h1>
+  <p>Dies ist das ExposePilot Backend. (Wir designen das später schön.)</p>
+
+  <p><a href="logout.html">Logout</a></p>
+
+</body>
+</html>
