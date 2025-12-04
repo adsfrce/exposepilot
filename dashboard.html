@@ -264,6 +264,7 @@
       border: 1px solid rgba(148, 163, 184, 0.7);
       background: var(--bg-glass-soft);
       backdrop-filter: blur(16px);
+      cursor: pointer; /* Klick zum Logout */
     }
 
     .user-avatar {
@@ -303,21 +304,21 @@
 
     main {
       flex: 1;
-      padding: 34px 0 44px;
+      padding: 60px 0 44px; /* mehr Abstand nach oben */
+    }
+
+    .dashboard-layout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 28px;
     }
 
     .page-header {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 26px;
-    }
-
-    .page-eyebrow {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--text-soft);
     }
 
     .page-title {
@@ -326,15 +327,11 @@
       line-height: 1.3;
     }
 
-    .page-subline {
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-
     .hero {
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 100%;
     }
 
     .hero-card {
@@ -355,8 +352,8 @@
       z-index: 1;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      gap: 14px;
+      align-items: center; /* mittig */
+      gap: 18px;
     }
 
     .hero-gradient-ring {
@@ -374,12 +371,7 @@
 
     .hero-headline {
       font-family: "Playfair Display", serif;
-      font-size: 24px;
-    }
-
-    .hero-meta {
-      font-size: 13px;
-      color: var(--text-soft);
+      font-size: 22px;
     }
 
     .hero-actions {
@@ -387,6 +379,7 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
     .btn {
@@ -514,8 +507,8 @@
           </span>
         </button>
 
-        <!-- User-Pill mit Daten aus /me -->
-        <div class="user-pill">
+        <!-- User-Pill mit Daten aus /me (Klick -> Logout) -->
+        <div class="user-pill" id="userPill" title="Abmelden">
           <div class="user-avatar" id="userAvatar">EP</div>
           <div class="user-meta">
             <div class="user-name" id="userName">Konto</div>
@@ -583,33 +576,28 @@ if (welcomeEl) {
   <!-- MAIN -->
   <main>
     <div class="container">
-      <header class="page-header">
-        <div class="page-eyebrow">Übersicht</div>
-        <h1 class="page-title" id="welcomeHeadline">Willkommen</h1>
-        <p class="page-subline">
-          Startpunkt für die Arbeit mit Ihren Exposés.
-        </p>
-      </header>
+      <div class="dashboard-layout">
+        <header class="page-header">
+          <h1 class="page-title" id="welcomeHeadline">Willkommen</h1>
+        </header>
 
-      <section class="hero" aria-label="Dashboard">
-        <div class="hero-card">
-          <div class="hero-gradient-ring"></div>
-          <div class="hero-inner">
-            <h2 class="hero-headline">Dashboard</h2>
-            <p class="hero-meta">
-              Von hier aus wird ein neues Exposé angelegt. Bestehende Exposés finden Sie im Bereich „Exposés“ in der Navigation.
-            </p>
-            <div class="hero-actions">
-              <button class="btn btn-primary" type="button" id="newExposeBtn">
-                Neues Exposé erstellen
-              </button>
-              <button class="btn btn-secondary" type="button" id="goExposesBtn">
-                Zu den bestehenden Exposés
-              </button>
+        <section class="hero" aria-label="Dashboard">
+          <div class="hero-card">
+            <div class="hero-gradient-ring"></div>
+            <div class="hero-inner">
+              <h2 class="hero-headline">Was möchten Sie tun?</h2>
+              <div class="hero-actions">
+                <button class="btn btn-primary" type="button" id="newExposeBtn">
+                  Neues Exposé erstellen
+                </button>
+                <button class="btn btn-secondary" type="button" id="goExposesBtn">
+                  Zu den bestehenden Exposés
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </main>
 
@@ -670,6 +658,14 @@ if (welcomeEl) {
   if (goExposesBtn) {
     goExposesBtn.addEventListener("click", () => {
       window.location.href = "exposes.html";
+    });
+  }
+
+  // User-Pill klick -> Logout
+  const userPill = document.getElementById("userPill");
+  if (userPill) {
+    userPill.addEventListener("click", () => {
+      window.location.href = "logout.html";
     });
   }
 </script>
