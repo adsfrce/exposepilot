@@ -1,1 +1,1168 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot – Einstellungen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-glass-soft: rgba(255, 255, 255, 0.72);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.24);
+      --accent-gold: #caa46a;
+      --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.22);
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --nav-height: 70px;
+    }
+
+    [data-theme="dark"] {
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --bg-glass: rgba(15, 23, 42, 0.94);
+      --bg-glass-soft: rgba(15, 23, 42, 0.82);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.48);
+      --shadow-soft: 0 32px 90px rgba(0, 0, 0, 0.9);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    body { line-height: 1.6; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* HEADER */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.75)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.32);
+    }
+
+    [data-theme="dark"] .site-header {
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.9)
+      );
+      border-bottom-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .nav {
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .brand-name {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 4px;
+      color: var(--text-soft);
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1px;
+      width: 0;
+      background: #111827;
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.is-active {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .nav-link.is-active::after {
+      width: 100%;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* MODE Toggle */
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 4px 10px 4px 12px;
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .theme-toggle-label {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .theme-toggle-track {
+      width: 70px;
+      height: 30px;
+      border-radius: 999px;
+      padding: 4px;
+      background: linear-gradient(130deg, #e5e7eb, #9ca3af);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .theme-toggle-track {
+      background: radial-gradient(circle at 0% 0%, #111827, #020617);
+      border-color: rgba(148, 163, 184, 0.9);
+      justify-content: flex-end;
+    }
+
+    .theme-toggle-knob {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #fdf4e3, var(--accent-gold));
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="dark"] .theme-toggle-knob {
+      background: radial-gradient(circle at 30% 0%, #020617, #020617);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.9);
+    }
+
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+
+    .theme-icon-sun { display: block; }
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: block; }
+
+    /* User-Pill + Dropdown */
+
+    .user-wrapper {
+      position: relative;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px 4px 6px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+    }
+
+    .user-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      min-width: 160px;
+      border-radius: 16px;
+      background: var(--bg-glass);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      padding: 6px;
+      display: none;
+      z-index: 60;
+    }
+
+    .user-menu.is-open { display: block; }
+
+    .user-menu-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .user-menu-item:hover {
+      background: rgba(148, 163, 184, 0.15);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #fefefe, #d1d5db);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      overflow: hidden;
+    }
+
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    [data-theme="dark"] .user-avatar {
+      background: radial-gradient(circle at 30% 0%, #111827, #020617);
+      color: #f9fafb;
+    }
+
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .user-email {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* MAIN */
+
+    main {
+      flex: 1;
+      padding: 60px 0 44px;
+    }
+
+    .settings-header {
+      margin-bottom: 26px;
+    }
+
+    .settings-title {
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
+
+    .settings-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 880px) {
+      .settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 22px 20px 18px;
+      backdrop-filter: blur(24px);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .form-grid-two {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+    }
+
+    .form-grid-full {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      border-radius: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 7px 10px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    [data-theme="dark"] .field input,
+    [data-theme="dark"] .field textarea,
+    [data-theme="dark"] .field select {
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .section-divider {
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+      margin: 14px 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: transparent;
+      color: var(--text-main);
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 0% 0%, #e5d7b5, #111827);
+      color: #f9fafb;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.32);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148, 163, 184, 0.5);
+      background: var(--bg-glass-soft);
+      font-size: 12px;
+      padding: 6px 14px;
+    }
+
+    .btn-ghost:hover {
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .status {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .status-ok {
+      color: #16a34a;
+    }
+
+    .status-error {
+      color: #dc2626;
+    }
+
+    .branding-colors {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+    }
+
+    .color-pair {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .color-pair input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 0;
+      background: transparent;
+    }
+
+    .color-pair input[type="color"]::-webkit-color-swatch {
+      border-radius: 999px;
+      border: none;
+    }
+
+    .color-pair input[type="color"]::-moz-color-swatch {
+      border-radius: 999px;
+      border: none;
+    }
+
+    .color-pair input[type="text"] {
+      flex: 1;
+    }
+
+    .logo-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .logo-preview {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(249, 250, 251, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .logo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-upload-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .settings-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.06), transparent);
+      padding: 18px 0 24px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    [data-theme="dark"] footer {
+      border-top-color: rgba(148, 163, 184, 0.5);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.7), transparent);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-name">ExposePilot</div>
+        <div class="brand-sub">Einstellungen</div>
+      </div>
+
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="exposes.html" class="nav-link">Exposés</a>
+        <a href="settings.html" class="nav-link is-active">Einstellungen</a>
+      </nav>
+
+      <div class="nav-right">
+        <!-- MODE Toggle -->
+        <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Darstellung wechseln">
+          <span class="theme-toggle-label">MODE</span>
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-knob">
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
+              </svg>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16.5 3a7.5 7.5 0 1 0 4.5 13.5A8 8 0 0 1 16.5 3z" fill="#e5e7eb"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+
+        <!-- User-Pill mit Dropdown-Menü -->
+        <div class="user-wrapper">
+          <button class="user-pill" id="userPill" type="button">
+            <div class="user-avatar" id="userAvatar">EP</div>
+            <div class="user-meta">
+              <div class="user-name" id="userName">Konto</div>
+              <div class="user-email" id="userEmail"></div>
+            </div>
+          </button>
+
+          <div class="user-menu" id="userMenu">
+            <button type="button" class="user-menu-item" id="logoutBtn">
+              Abmelden
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SESSION CHECK + USER INFO -->
+  <script>
+    let currentLogoUrl = null;
+
+    fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.logged_in) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        const user = data.user || {};
+        const companyName = user.company_name || "Ihr Unternehmen";
+        const email = user.email || "";
+
+        const userNameEl = document.getElementById("userName");
+        const userEmailEl = document.getElementById("userEmail");
+        const userAvatarEl = document.getElementById("userAvatar");
+
+        if (userNameEl) userNameEl.textContent = companyName;
+        if (userEmailEl) userEmailEl.textContent = email;
+
+        // Logo aus /me, falls vorhanden
+        if (user.logo_url) {
+          currentLogoUrl = user.logo_url;
+          if (userAvatarEl) {
+            userAvatarEl.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = user.logo_url;
+            img.alt = "Logo";
+            userAvatarEl.appendChild(img);
+          }
+          const logoPreview = document.getElementById("logoPreview");
+          if (logoPreview) {
+            logoPreview.innerHTML = "";
+            const imgPrev = document.createElement("img");
+            imgPrev.src = user.logo_url;
+            imgPrev.alt = "Logo";
+            logoPreview.appendChild(imgPrev);
+          }
+        } else {
+          const initials = companyName
+            .split(" ")
+            .filter(Boolean)
+            .map(p => p[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase();
+          if (userAvatarEl) userAvatarEl.textContent = initials || "EP";
+        }
+
+        // Firmendaten vorbefüllen (soweit vorhanden)
+        const companyNameInput = document.getElementById("company_name");
+        const emailInput = document.getElementById("company_email");
+        const phoneInput = document.getElementById("company_phone");
+
+        if (companyNameInput && user.company_name) {
+          companyNameInput.value = user.company_name;
+        }
+        if (emailInput && user.email) {
+          emailInput.value = user.email;
+        }
+        if (phoneInput && user.phone) {
+          phoneInput.value = user.phone;
+        }
+
+        // Branding laden
+        loadBranding();
+      })
+      .catch(() => {
+        window.location.href = "login.html";
+      });
+  </script>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <header class="settings-header">
+        <h1 class="settings-title">Einstellungen</h1>
+        <p class="settings-sub">Firmendaten, Branding und Abonnement verwalten.</p>
+      </header>
+
+      <div class="settings-grid">
+        <!-- LINKSSPALTE: Firmendaten + Branding -->
+        <section class="card">
+          <div class="settings-section-title">Firmendaten</div>
+          <p class="card-subtitle">
+            Angaben für Impressum, Kontakt und Exposés.
+          </p>
+
+          <form id="companyForm" class="form-grid-full">
+            <div class="field">
+              <label for="contact_person">Ansprechpartner</label>
+              <input type="text" id="contact_person" autocomplete="name" />
+            </div>
+
+            <div class="form-grid-two">
+              <div class="field">
+                <label for="company_name">Firmenname</label>
+                <input type="text" id="company_name" autocomplete="organization" />
+              </div>
+              <div class="field">
+                <label for="tax_id">Steuer-ID / USt-ID</label>
+                <input type="text" id="tax_id" />
+              </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field">
+              <label for="street">Straße und Hausnummer</label>
+              <input type="text" id="street" autocomplete="address-line1" />
+            </div>
+
+            <div class="form-grid-two">
+              <div class="field">
+                <label for="postal_code">PLZ</label>
+                <input type="text" id="postal_code" autocomplete="postal-code" />
+              </div>
+              <div class="field">
+                <label for="city">Ort</label>
+                <input type="text" id="city" autocomplete="address-level2" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="country">Land</label>
+              <input type="text" id="country" autocomplete="country" />
+            </div>
+
+            <div class="field">
+              <label for="address_extra">Adresszusatz</label>
+              <input type="text" id="address_extra" />
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="form-grid-two">
+              <div class="field">
+                <label for="company_email">E-Mail</label>
+                <input type="email" id="company_email" autocomplete="email" />
+              </div>
+              <div class="field">
+                <label for="company_phone">Telefon</label>
+                <input type="tel" id="company_phone" autocomplete="tel" />
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="btn btn-primary">Firmendaten speichern</button>
+              <span id="companyStatus" class="status"></span>
+            </div>
+          </form>
+
+          <div class="section-divider" style="margin-top:18px;"></div>
+
+          <div class="settings-section-title" style="margin-top:8px;">Branding</div>
+          <p class="card-subtitle">
+            Farben für UI und Exposé-Design.
+          </p>
+
+          <form id="brandingForm" class="form-grid-full">
+            <div class="branding-colors">
+              <div class="field">
+                <label>Primärfarbe</label>
+                <div class="color-pair">
+                  <input type="color" id="primary_color_picker" />
+                  <input type="text" id="primary_color_hex" placeholder="#111827" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Sekundärfarbe</label>
+                <div class="color-pair">
+                  <input type="color" id="secondary_color_picker" />
+                  <input type="text" id="secondary_color_hex" placeholder="#caa46a" />
+                </div>
+              </div>
+            </div>
+
+            <p class="helper-text">
+              Farbrad wählen oder HEX direkt eingeben.
+            </p>
+
+            <div style="margin-top:8px;">
+              <button type="submit" class="btn btn-primary">Branding speichern</button>
+              <span id="brandingStatus" class="status"></span>
+            </div>
+          </form>
+        </section>
+
+        <!-- RECHTSSPALTE: Logo + Zahlung -->
+        <section class="card">
+          <div class="settings-section-title">Logo</div>
+          <p class="card-subtitle">
+            Firmenlogo für Navigationsleiste und Exposés.
+          </p>
+
+          <div class="logo-row">
+            <div class="logo-preview" id="logoPreview">
+              Kein Logo
+            </div>
+            <div class="logo-upload-actions">
+              <div class="field">
+                <input type="file" id="logoFile" accept="image/*" />
+              </div>
+              <button type="button" class="btn btn-ghost" id="uploadLogoBtn">
+                Logo hochladen
+              </button>
+              <p class="helper-text">
+                PNG oder JPG, idealerweise quadratisch.
+              </p>
+              <span id="logoStatus" class="status"></span>
+            </div>
+          </div>
+
+          <div class="section-divider" style="margin-top:18px;"></div>
+
+          <div class="settings-section-title" style="margin-top:6px;">Zahlung & Abonnement</div>
+          <p class="card-subtitle">
+            Abrechnung erfolgt über Stripe. Abonnement kann dort verwaltet oder gekündigt werden.
+          </p>
+
+          <a href="https://stripe.com" target="_blank" rel="noopener" class="btn btn-ghost">
+            Stripe öffnen
+          </a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>ExposePilot</div>
+      <div class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Theme Handling
+  const htmlEl = document.documentElement;
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+  function applyTheme(theme) {
+    if (!["light", "dark"].includes(theme)) theme = "light";
+    htmlEl.setAttribute("data-theme", theme);
+    localStorage.setItem("exposepilot-theme", theme);
+  }
+
+  function initTheme() {
+    const stored = localStorage.getItem("exposepilot-theme");
+    applyTheme(stored === "dark" ? "dark" : "light");
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const isDark = htmlEl.getAttribute("data-theme") === "dark";
+      applyTheme(isDark ? "light" : "dark");
+    });
+  }
+
+  initTheme();
+
+  // User-Dropdown
+  const userPill = document.getElementById("userPill");
+  const userMenu = document.getElementById("userMenu");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (userPill && userMenu) {
+    userPill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userMenu.classList.toggle("is-open");
+    });
+
+    document.addEventListener("click", () => {
+      userMenu.classList.remove("is-open");
+    });
+
+    userMenu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      window.location.href = "logout.html";
+    });
+  }
+
+  // Branding laden
+  async function loadBranding() {
+    try {
+      const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/get", {
+        credentials: "include"
+      });
+      const data = await res.json();
+      if (!data.logged_in) return;
+
+      const user = data.user || {};
+      const primary = user.primary_color || "#111827";
+      const secondary = user.secondary_color || "#caa46a";
+
+      const primaryPicker = document.getElementById("primary_color_picker");
+      const primaryHex = document.getElementById("primary_color_hex");
+      const secondaryPicker = document.getElementById("secondary_color_picker");
+      const secondaryHex = document.getElementById("secondary_color_hex");
+
+      if (primaryPicker) primaryPicker.value = primary;
+      if (primaryHex) primaryHex.value = primary;
+      if (secondaryPicker) secondaryPicker.value = secondary;
+      if (secondaryHex) secondaryHex.value = secondary;
+    } catch (e) {
+      // optional: log
+    }
+  }
+
+  // Branding speichern
+  const brandingForm = document.getElementById("brandingForm");
+  if (brandingForm) {
+    brandingForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const primary = document.getElementById("primary_color_hex").value.trim();
+      const secondary = document.getElementById("secondary_color_hex").value.trim();
+      const companyName = document.getElementById("company_name").value.trim();
+      const statusEl = document.getElementById("brandingStatus");
+
+      statusEl.textContent = "Speichern...";
+      statusEl.className = "status";
+
+      try {
+        const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/save", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            company_name: companyName,
+            primary_color: primary,
+            secondary_color: secondary
+          })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          statusEl.textContent = "Branding gespeichert.";
+          statusEl.className = "status status-ok";
+        } else {
+          statusEl.textContent = data.error || "Fehler beim Speichern.";
+          statusEl.className = "status status-error";
+        }
+      } catch (err) {
+        statusEl.textContent = "Fehler beim Speichern.";
+        statusEl.className = "status status-error";
+      }
+    });
+
+    // Color-Picker <-> HEX synchronisieren
+    const primaryPicker = document.getElementById("primary_color_picker");
+    const primaryHex = document.getElementById("primary_color_hex");
+    const secondaryPicker = document.getElementById("secondary_color_picker");
+    const secondaryHex = document.getElementById("secondary_color_hex");
+
+    if (primaryPicker && primaryHex) {
+      primaryPicker.addEventListener("input", () => {
+        primaryHex.value = primaryPicker.value;
+      });
+      primaryHex.addEventListener("input", () => {
+        if (primaryHex.value.startsWith("#") && primaryHex.value.length === 7) {
+          primaryPicker.value = primaryHex.value;
+        }
+      });
+    }
+
+    if (secondaryPicker && secondaryHex) {
+      secondaryPicker.addEventListener("input", () => {
+        secondaryHex.value = secondaryPicker.value;
+      });
+      secondaryHex.addEventListener("input", () => {
+        if (secondaryHex.value.startsWith("#") && secondaryHex.value.length === 7) {
+          secondaryPicker.value = secondaryHex.value;
+        }
+      });
+    }
+  }
+
+  // Firmendaten speichern – ENDPOINT ANPASSEN, sobald vorhanden
+  const companyForm = document.getElementById("companyForm");
+  if (companyForm) {
+    companyForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        contact_person: document.getElementById("contact_person").value.trim(),
+        company_name: document.getElementById("company_name").value.trim(),
+        tax_id: document.getElementById("tax_id").value.trim(),
+        street: document.getElementById("street").value.trim(),
+        postal_code: document.getElementById("postal_code").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        country: document.getElementById("country").value.trim(),
+        address_extra: document.getElementById("address_extra").value.trim(),
+        email: document.getElementById("company_email").value.trim(),
+        phone: document.getElementById("company_phone").value.trim()
+      };
+
+      const statusEl = document.getElementById("companyStatus");
+      statusEl.textContent = "Speichern...";
+      statusEl.className = "status";
+
+      try {
+        // TODO: Backend-Endpoint nachziehen
+        const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/settings/company/save", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.ok) {
+          statusEl.textContent = "Firmendaten gespeichert.";
+          statusEl.className = "status status-ok";
+        } else {
+          statusEl.textContent = data.error || "Fehler beim Speichern.";
+          statusEl.className = "status status-error";
+        }
+      } catch (err) {
+        statusEl.textContent = "Fehler beim Speichern.";
+        statusEl.className = "status status-error";
+      }
+    });
+  }
+
+  // Logo-Upload – ENDPOINT ANPASSEN, sobald vorhanden
+  const logoFileInput = document.getElementById("logoFile");
+  const logoPreview = document.getElementById("logoPreview");
+  const uploadLogoBtn = document.getElementById("uploadLogoBtn");
+  const logoStatus = document.getElementById("logoStatus");
+
+  if (logoFileInput && logoPreview) {
+    logoFileInput.addEventListener("change", () => {
+      const file = logoFileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        logoPreview.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.alt = "Logo Vorschau";
+        logoPreview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (uploadLogoBtn) {
+    uploadLogoBtn.addEventListener("click", async () => {
+      const file = logoFileInput.files && logoFileInput.files[0];
+      if (!file) {
+        logoStatus.textContent = "Bitte zuerst eine Datei auswählen.";
+        logoStatus.className = "status status-error";
+        return;
+      }
+
+      logoStatus.textContent = "Upload läuft...";
+      logoStatus.className = "status";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // TODO: Backend-Endpoint bereitstellen
+        const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/logo", {
+          method: "POST",
+          credentials: "include",
+          body: formData
+        });
+        const data = await res.json();
+        if (data.ok && data.logo_url) {
+          logoStatus.textContent = "Logo gespeichert.";
+          logoStatus.className = "status status-ok";
+
+          // Avatar oben direkt aktualisieren
+          const userAvatarEl = document.getElementById("userAvatar");
+          if (userAvatarEl) {
+            userAvatarEl.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = data.logo_url;
+            img.alt = "Logo";
+            userAvatarEl.appendChild(img);
+          }
+        } else {
+          logoStatus.textContent = data.error || "Fehler beim Upload.";
+          logoStatus.className = "status status-error";
+        }
+      } catch (err) {
+        logoStatus.textContent = "Fehler beim Upload.";
+        logoStatus.className = "status status-error";
+      }
+    });
+  }
+</script>
+</body>
+</html>
