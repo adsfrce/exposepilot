@@ -1,0 +1,8 @@
+<script>
+fetch("https://expose-api.black-bar-1b40.workers.dev/logout", {
+  method: "POST",
+  credentials: "include"
+}).then(() => {
+  window.location.href = "login.html";
+});
+</script>
