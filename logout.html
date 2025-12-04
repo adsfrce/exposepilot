@@ -1,8 +1,64 @@
-<script>
-fetch("https://expose-api.black-bar-1b40.workers.dev/logout", {
-  method: "POST",
-  credentials: "include"
-}).then(() => {
-  window.location.href = "login.html";
-});
-</script>
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot – Logout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+    }
+
+    [data-theme="dark"] {
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    body { display: flex; align-items: center; justify-content: center; }
+
+    .info {
+      font-size: 14px;
+      color: var(--text-soft);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <p class="info">Sie werden abgemeldet…</p>
+
+  <script>
+    // vorhandenes Theme aus LocalStorage übernehmen
+    (function initTheme() {
+      const stored = localStorage.getItem("exposepilot-theme");
+      if (stored === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+
+    fetch("https://expose-api.black-bar-1b40.workers.dev/logout", {
+      method: "POST",
+      credentials: "include"
+    }).then(() => {
+      window.location.href = "login.html";
+    }).catch(() => {
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
