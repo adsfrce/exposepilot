@@ -764,7 +764,18 @@
                 <input type="text" id="tax_id" />
               </div>
             </div>
-
+            
+            <div class="form-grid-two">
+              <div class="field">
+                <label for="hrb_number">HRB-Nummer</label>
+                <input type="text" id="hrb_number" />
+              </div>
+              <div class="field">
+                <label for="register_court">Registergericht</label>
+                <input type="text" id="register_court" />
+              </div>
+            </div>
+            
             <div class="section-divider"></div>
 
             <div class="field">
@@ -1054,18 +1065,20 @@
     companyForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const payload = {
-        contact_person: document.getElementById("contact_person").value.trim(),
-        company_name: document.getElementById("company_name").value.trim(),
-        tax_id: document.getElementById("tax_id").value.trim(),
-        street: document.getElementById("street").value.trim(),
-        postal_code: document.getElementById("postal_code").value.trim(),
-        city: document.getElementById("city").value.trim(),
-        country: document.getElementById("country").value.trim(),
-        address_extra: document.getElementById("address_extra").value.trim(),
-        email: document.getElementById("company_email").value.trim(),
-        phone: document.getElementById("company_phone").value.trim()
-      };
+const payload = {
+  contact_person: document.getElementById("contact_person").value.trim(),
+  company_name: document.getElementById("company_name").value.trim(),
+  tax_id: document.getElementById("tax_id").value.trim(),
+  street: document.getElementById("street").value.trim(),
+  postal_code: document.getElementById("postal_code").value.trim(),
+  city: document.getElementById("city").value.trim(),
+  country: document.getElementById("country").value.trim(),
+  address_extra: document.getElementById("address_extra").value.trim(),
+  email: document.getElementById("company_email").value.trim(),
+  phone: document.getElementById("company_phone").value.trim(),
+  hrb_number: document.getElementById("hrb_number").value.trim(),
+  register_court: document.getElementById("register_court").value.trim()
+};
 
       const statusEl = document.getElementById("companyStatus");
       statusEl.textContent = "Speichern...";
