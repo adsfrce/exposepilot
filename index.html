@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <title>ExposePilot</title>
@@ -8,22 +8,22 @@
   <p>Weiterleitung...</p>
 
   <script>
-  // Prüfen, ob Nutzer eingeloggt ist
-  fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
-    credentials: "include"
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.logged_in) {
-        window.location.href = "dashboard.html";
-      } else {
-        window.location.href = "login.html";
-      }
+    // Prüfen, ob Nutzer eingeloggt ist
+    fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
+      credentials: "include"
     })
-    .catch(() => {
-      // Wenn irgendwas crasht -> Loginseite
-      window.location.href = "login.html";
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.logged_in) {
+          window.location.href = "dashboard.html";
+        } else {
+          window.location.href = "login.html";
+        }
+      })
+      .catch(() => {
+        // Wenn irgendwas crasht -> Loginseite
+        window.location.href = "login.html";
+      });
   </script>
 </body>
 </html>
