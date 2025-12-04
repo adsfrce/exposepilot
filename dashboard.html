@@ -28,22 +28,61 @@
 
   <h2>Branding</h2>
 
-<form id="brandingForm">
-  <label>Firmenname:</label><br>
-  <input type="text" id="company_name"><br><br>
+  <form id="brandingForm">
+    <label>Firmenname:</label><br>
+    <input type="text" id="company_name"><br><br>
 
-  <label>Primärfarbe (HEX):</label><br>
-  <input type="text" id="primary_color" placeholder="#000000"><br><br>
+    <label>Primärfarbe (HEX):</label><br>
+    <input type="text" id="primary_color" placeholder="#000000"><br><br>
 
-  <label>Sekundärfarbe (HEX):</label><br>
-  <input type="text" id="secondary_color" placeholder="#ffffff"><br><br>
+    <label>Sekundärfarbe (HEX):</label><br>
+    <input type="text" id="secondary_color" placeholder="#ffffff"><br><br>
 
-  <button type="submit">Speichern</button>
-</form>
+    <button type="submit">Speichern</button>
+  </form>
 
-<p id="brandingStatus" style="color:green;"></p>
+  <p id="brandingStatus" style="color:green;"></p>
 
   <p><a href="logout.html">Logout</a></p>
+
+
+  <!-- ➜ BRANDING SCRIPT KOMMT GENAU HIER HIN (vor </body>) -->
+  <script>
+  async function loadBranding() {
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/get", {
+      credentials: "include"
+    });
+    const data = await res.json();
+
+    if (!data.logged_in) return;
+
+    document.getElementById("company_name").value = data.user.company_name || "";
+    document.getElementById("primary_color").value = data.user.primary_color || "";
+    document.getElementById("secondary_color").value = data.user.secondary_color || "";
+  }
+
+  document.getElementById("brandingForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const company_name = document.getElementById("company_name").value;
+    const primary_color = document.getElementById("primary_color").value;
+    const secondary_color = document.getElementById("secondary_color").value;
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/save", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ company_name, primary_color, secondary_color })
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById("brandingStatus").textContent = "Gespeichert.";
+    }
+  });
+
+  loadBranding();
+  </script>
 
 </body>
 </html>
