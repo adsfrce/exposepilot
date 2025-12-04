@@ -17,7 +17,6 @@
         window.location.href = "login.html";
         return;
       }
-
       document.getElementById("welcome").textContent =
         "Willkommen, " + data.user.company_name;
     });
@@ -26,8 +25,8 @@
   <h1 id="welcome">Dashboard wird geladen...</h1>
   <p>Dies ist das ExposePilot Backend. (Wir designen das später schön.)</p>
 
+  <!-- BRANDING -->
   <h2>Branding</h2>
-
   <form id="brandingForm">
     <label>Firmenname:</label><br>
     <input type="text" id="company_name"><br><br>
@@ -43,10 +42,43 @@
 
   <p id="brandingStatus" style="color:green;"></p>
 
+  <hr>
+
+  <!-- EXPOSÉ ERSTELLEN -->
+  <h2>Neues Exposé</h2>
+
+  <form id="exposeForm">
+    <label>Titel:</label><br>
+    <input type="text" id="expose_title"><br><br>
+
+    <label>Wohnfläche (qm):</label><br>
+    <input type="number" id="wohnflaeche"><br><br>
+
+    <label>Grundstück (qm):</label><br>
+    <input type="number" id="grundstueck"><br><br>
+
+    <label>Baujahr:</label><br>
+    <input type="text" id="baujahr"><br><br>
+
+    <label>Zimmer:</label><br>
+    <input type="number" id="zimmer"><br><br>
+
+    <label>Template (1–4):</label><br>
+    <input type="number" id="template_id" value="1"><br><br>
+
+    <button type="submit">Exposé anlegen</button>
+  </form>
+
+  <p id="exposeStatus" style="color:green;"></p>
+
+  <hr>
+
+  <h2>Meine Exposés</h2>
+  <ul id="exposeList"></ul>
+
   <p><a href="logout.html">Logout</a></p>
 
-
-  <!-- ➜ BRANDING SCRIPT KOMMT GENAU HIER HIN (vor </body>) -->
+  <!-- BRANDING & EXPOSE SCRIPTS -->
   <script>
   async function loadBranding() {
     const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/get", {
@@ -82,6 +114,55 @@
   });
 
   loadBranding();
+
+
+  // EXPOSE CREATE
+  document.getElementById("exposeForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+      title: document.getElementById("expose_title").value,
+      template_id: Number(document.getElementById("template_id").value),
+      data_json: {
+        wohnflaeche: Number(document.getElementById("wohnflaeche").value),
+        grundstueck: Number(document.getElementById("grundstueck").value),
+        baujahr: document.getElementById("baujahr").value,
+        zimmer: Number(document.getElementById("zimmer").value)
+      }
+    };
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/create", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const jsonData = await res.json();
+    if (jsonData.ok) {
+      document.getElementById("exposeStatus").textContent = "Exposé gespeichert.";
+      loadExposeList();
+    }
+  });
+
+  // LIST LOAD
+  async function loadExposeList() {
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/list", {
+      credentials: "include"
+    });
+    const data = await res.json();
+
+    const list = document.getElementById("exposeList");
+    list.innerHTML = "";
+
+    data.exposes.forEach(exp => {
+      const li = document.createElement("li");
+      li.textContent = exp.title + " (ID: " + exp.id + ")";
+      list.appendChild(li);
+    });
+  }
+
+  loadExposeList();
   </script>
 
 </body>
