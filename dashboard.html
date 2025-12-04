@@ -541,10 +541,21 @@
         const companyName = data.user.company_name || "Ihr Unternehmen";
         const email = data.user.email || "";
 
-        const welcomeEl = document.getElementById("welcomeHeadline");
-        if (welcomeEl) {
-          welcomeEl.textContent = "Willkommen, " + companyName;
-        }
+// Dynamische Begrüßung (Morgen / Tag / Abend)
+function getGreetingByHour(hour) {
+  if (hour >= 5 && hour < 11) return "Guten Morgen";
+  if (hour >= 11 && hour < 18) return "Guten Tag";
+  return "Guten Abend";
+}
+
+const now = new Date();
+const hour = now.getHours();
+const greeting = getGreetingByHour(hour);
+
+const welcomeEl = document.getElementById("welcomeHeadline");
+if (welcomeEl) {
+  welcomeEl.textContent = greeting + ", " + companyName;
+}
 
         const userNameEl = document.getElementById("userName");
         const userEmailEl = document.getElementById("userEmail");
