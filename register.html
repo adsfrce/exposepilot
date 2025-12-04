@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot Registrierung</title>
+</head>
+<body>
+  <h1>ExposePilot – Registrieren</h1>
+
+  <form id="registerForm">
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+
+    <label>Passwort:</label><br>
+    <input type="password" id="password" required><br><br>
+
+    <label>Firmenname:</label><br>
+    <input type="text" id="company_name"><br><br>
+
+    <button type="submit">Registrieren</button>
+  </form>
+
+  <p id="status" style="color:green;"></p>
+  <p id="error" style="color:red;"></p>
+
+  <p>Schon Account? <a href="login.html">Zum Login</a></p>
+
+  <script>
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const company_name = document.getElementById("company_name").value;
+
+    document.getElementById("status").textContent = "Registrierung läuft...";
+    document.getElementById("error").textContent = "";
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, company_name }),
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      document.getElementById("status").textContent = "";
+      document.getElementById("error").textContent = data.error || "Fehler bei der Registrierung.";
+      return;
+    }
+
+    document.getElementById("status").textContent = "Registrierung erfolgreich. Du kannst dich jetzt einloggen.";
+  });
+  </script>
+</body>
+</html>
