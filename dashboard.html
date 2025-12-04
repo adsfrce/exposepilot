@@ -618,8 +618,9 @@
           return;
         }
 
-        const companyName = data.user.company_name || "Ihr Unternehmen";
-        const email = data.user.email || "";
+        const user = data.user || {};
+        const companyName = user.company_name || "Ihr Unternehmen";
+        const email = user.email || "";
 
         // Dynamische Begrüßung (Morgen / Tag / Abend)
         function getGreetingByHour(hour) {
@@ -645,14 +646,27 @@
         if (userEmailEl) userEmailEl.textContent = email;
 
         if (userAvatarEl) {
-          const initials = companyName
-            .split(" ")
-            .filter(Boolean)
-            .map(p => p[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase();
-          userAvatarEl.textContent = initials || "EP";
+          // Wenn ein Logo vorhanden ist → Logo im Avatar anzeigen
+          if (user.logo_url) {
+            userAvatarEl.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = user.logo_url;
+            img.alt = "Logo";
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "100%";
+            img.style.borderRadius = "999px";
+            userAvatarEl.appendChild(img);
+          } else {
+            // Fallback: Initialen
+            const initials = companyName
+              .split(" ")
+              .filter(Boolean)
+              .map(p => p[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase();
+            userAvatarEl.textContent = initials || "EP";
+          }
         }
       })
       .catch(() => {
