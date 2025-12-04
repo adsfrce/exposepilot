@@ -5,38 +5,35 @@
   <title>ExposePilot Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Serif font für Headings wie Noventum -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #f5f5f7;
-      --bg-elevated: #ffffff;
-      --bg-soft: #e5e7eb;
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --bg-glass: rgba(255, 255, 255, 0.78);
+      --bg-glass-soft: rgba(255, 255, 255, 0.64);
       --text-main: #111827;
       --text-soft: #6b7280;
-      --border-subtle: rgba(15, 23, 42, 0.08);
-      --accent-blue: #162640;
-      --accent-blue-soft: rgba(22, 38, 64, 0.06);
-      --accent-gold: #d0a15a;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.16);
-      --radius-lg: 22px;
+      --border-subtle: rgba(15, 23, 42, 0.12);
+      --accent-dark: #111827;
+      --accent-gold: #caa46a;
+      --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.22);
+      --radius-lg: 26px;
       --radius-pill: 999px;
-      --nav-height: 64px;
+      --nav-height: 70px;
     }
 
     [data-theme="dark"] {
-      --bg: #020617;
-      --bg-elevated: #030712;
-      --bg-soft: #020617;
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --bg-glass: rgba(15, 23, 42, 0.92);
+      --bg-glass-soft: rgba(15, 23, 42, 0.82);
       --text-main: #f9fafb;
       --text-soft: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.24);
-      --accent-blue: #e5e7eb;
-      --accent-blue-soft: rgba(15, 23, 42, 0.55);
-      --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.7);
+      --border-subtle: rgba(148, 163, 184, 0.42);
+      --accent-dark: #e5e7eb;
+      --shadow-soft: 0 32px 90px rgba(0, 0, 0, 0.9);
     }
 
     * {
@@ -47,10 +44,10 @@
 
     html, body {
       height: 100%;
-      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
       color: var(--text-main);
     }
 
@@ -59,8 +56,8 @@
     }
 
     a {
-      text-decoration: none;
       color: inherit;
+      text-decoration: none;
     }
 
     .page {
@@ -71,7 +68,7 @@
 
     .container {
       width: 100%;
-      max-width: 1160px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -82,14 +79,22 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      backdrop-filter: blur(8px);
-      background: linear-gradient(to bottom, rgba(245, 245, 247, 0.92), rgba(245, 245, 247, 0.88));
-      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+      backdrop-filter: blur(20px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.86),
+        rgba(255, 255, 255, 0.72)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.32);
     }
 
     [data-theme="dark"] .site-header {
-      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.94));
-      border-bottom-color: rgba(148, 163, 184, 0.35);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.9)
+      );
+      border-bottom-color: rgba(148, 163, 184, 0.6);
     }
 
     .nav {
@@ -97,49 +102,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 18px;
     }
 
-    .logo {
+    .brand {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: baseline;
+      gap: 6px;
     }
 
-    .logo-symbol {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 10% 0%, #fefefe, #d1d5db);
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .brand-name {
       font-family: "Playfair Display", serif;
       font-size: 20px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    [data-theme="dark"] .logo-symbol {
-      background: radial-gradient(circle at 10% 0%, #020617, #0f172a);
-      border-color: rgba(148, 163, 184, 0.4);
-      color: #f9fafb;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .logo-text span:first-child {
-      font-family: "Playfair Display", serif;
-      font-size: 18px;
-      letter-spacing: 0.03em;
-    }
-
-    .logo-text span:last-child {
+    .brand-sub {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
@@ -149,46 +128,45 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 26px;
-      font-size: 14px;
+      gap: 24px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
     }
 
-    .nav-links a {
+    .nav-link {
       position: relative;
-      color: var(--text-soft);
       padding-bottom: 4px;
-      transition: color 0.18s ease;
+      color: var(--text-soft);
     }
 
-    .nav-links a::after {
+    .nav-link::after {
       content: "";
       position: absolute;
       left: 0;
       bottom: 0;
-      width: 0;
       height: 1px;
-      background: var(--accent-blue);
-      transition: width 0.2s ease;
+      width: 0;
+      background: var(--accent-dark);
+      transition: width 0.18s ease;
     }
 
-    .nav-links a:hover {
+    .nav-link:hover {
       color: var(--text-main);
     }
 
-    .nav-links a:hover::after {
+    .nav-link:hover::after {
       width: 100%;
     }
 
-    .nav-links .is-active {
+    .nav-link.is-active {
       color: var(--text-main);
       font-weight: 500;
     }
 
-    .nav-links .is-active::after {
+    .nav-link.is-active::after {
       width: 100%;
     }
-
-    /* Theme Toggle – ON + Sonne/Mond (SVG, keine Emojis) */
 
     .nav-right {
       display: flex;
@@ -196,47 +174,45 @@
       gap: 14px;
     }
 
+    /* MODE Toggle */
+
     .theme-toggle {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(15, 23, 42, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.7);
       padding: 4px 10px 4px 12px;
-      background: rgba(255, 255, 255, 0.8);
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(16px);
       cursor: pointer;
       font-size: 11px;
     }
 
-    [data-theme="dark"] .theme-toggle {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.7);
-    }
-
     .theme-toggle-label {
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       font-weight: 600;
       color: var(--text-soft);
     }
 
     .theme-toggle-track {
-      width: 64px;
+      width: 70px;
       height: 30px;
       border-radius: 999px;
       padding: 4px;
-      background: linear-gradient(120deg, #111827, #030712);
+      background: linear-gradient(130deg, #e5e7eb, #9ca3af);
       border: 1px solid rgba(148, 163, 184, 0.9);
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: flex-start;
       overflow: hidden;
     }
 
-    [data-theme="light"] .theme-toggle-track {
-      background: linear-gradient(120deg, #e5e7eb, #9ca3af);
-      border-color: rgba(148, 163, 184, 0.8);
-      justify-content: flex-start;
+    [data-theme="dark"] .theme-toggle-track {
+      background: radial-gradient(circle at 0% 0%, #111827, #020617);
+      border-color: rgba(148, 163, 184, 0.9);
+      justify-content: flex-end;
     }
 
     .theme-toggle-knob {
@@ -244,36 +220,37 @@
       height: 22px;
       border-radius: 999px;
       background: radial-gradient(circle at 30% 0%, #fdf4e3, var(--accent-gold));
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     [data-theme="dark"] .theme-toggle-knob {
-      background: radial-gradient(circle at 30% 0%, #0b1120, #020617);
+      background: radial-gradient(circle at 30% 0%, #020617, #020617);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.9);
     }
 
     .theme-icon {
-      width: 14px;
-      height: 14px;
+      width: 15px;
+      height: 15px;
       display: block;
     }
 
-    .theme-icon.theme-icon-sun {
+    .theme-icon-sun {
+      display: block;
+    }
+
+    .theme-icon-moon {
       display: none;
     }
 
-    .theme-icon.theme-icon-moon {
-      display: block;
-    }
-
-    [data-theme="light"] .theme-icon.theme-icon-sun {
-      display: block;
-    }
-
-    [data-theme="light"] .theme-icon.theme-icon-moon {
+    [data-theme="dark"] .theme-icon-sun {
       display: none;
+    }
+
+    [data-theme="dark"] .theme-icon-moon {
+      display: block;
     }
 
     /* User-Pill */
@@ -281,16 +258,12 @@
     .user-pill {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       border-radius: var(--radius-pill);
-      padding: 4px 10px 4px 5px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    [data-theme="dark"] .user-pill {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.7);
+      padding: 4px 10px 4px 6px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(16px);
     }
 
     .user-avatar {
@@ -301,7 +274,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
     }
 
@@ -326,36 +299,24 @@
       color: var(--text-soft);
     }
 
-    /* Layout / Cards */
+    /* MAIN */
 
     main {
       flex: 1;
-      padding: 28px 0 40px;
-    }
-
-    .grid-main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-      gap: 24px;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 960px) {
-      .grid-main {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      padding: 34px 0 44px;
     }
 
     .page-header {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 26px;
     }
 
     .page-eyebrow {
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       color: var(--text-soft);
     }
 
@@ -370,45 +331,63 @@
       color: var(--text-soft);
     }
 
-    .card {
-      background: var(--bg-elevated);
-      border-radius: var(--radius-lg);
-      padding: 20px 20px 18px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
-    }
-
-    [data-theme="dark"] .card {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.32);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .card-header {
+    .hero {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 12px;
-      margin-bottom: 14px;
+      justify-content: center;
+      align-items: center;
     }
 
-    .card-title {
+    .hero-card {
+      position: relative;
+      border-radius: 30px;
+      padding: 30px 26px 28px;
+      background: var(--bg-glass);
+      border: 1px solid rgba(148, 163, 184, 0.36);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(26px);
+      max-width: 720px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .hero-gradient-ring {
+      position: absolute;
+      inset: -60%;
+      background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.45), transparent 55%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    [data-theme="dark"] .hero-gradient-ring {
+      background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.08), transparent 55%);
+      opacity: 0.9;
+    }
+
+    .hero-headline {
       font-family: "Playfair Display", serif;
-      font-size: 18px;
+      font-size: 24px;
     }
 
-    .card-subtitle {
-      font-size: 12px;
+    .hero-meta {
+      font-size: 13px;
       color: var(--text-soft);
     }
 
-    .section-title-inline {
-      font-size: 14px;
-      font-weight: 500;
-      margin: 16px 0 6px;
+    .hero-actions {
+      margin-top: 4px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-
-    /* Buttons */
 
     .btn {
       display: inline-flex;
@@ -416,233 +395,53 @@
       justify-content: center;
       border-radius: var(--radius-pill);
       border: 1px solid transparent;
-      padding: 8px 16px;
+      padding: 9px 18px;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.18s ease;
       background: transparent;
       color: var(--text-main);
-      gap: 8px;
     }
 
     .btn-primary {
-      background: radial-gradient(circle at 0% 0%, #635c37, #111827);
+      background: radial-gradient(circle at 0% 0%, #e5d7b5, #111827);
       color: #f9fafb;
       border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.36);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.5);
+      box-shadow: 0 22px 44px rgba(15, 23, 42, 0.5);
     }
 
-    .btn-ghost {
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(15, 23, 42, 0.12);
+    .btn-secondary {
+      border-color: rgba(148, 163, 184, 0.5);
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
       padding: 7px 14px;
-      font-size: 13px;
-      background: #ffffff;
     }
 
-    [data-theme="dark"] .btn-ghost {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.6);
-      color: #e5e7eb;
-    }
-
-    .btn-ghost:hover {
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+    .btn-secondary:hover {
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
       transform: translateY(-1px);
     }
 
-    .btn-sm {
-      padding: 5px 12px;
-      font-size: 12px;
-    }
-
-    /* Forms */
-
-    form {
-      margin-top: 4px;
-    }
-
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    @media (max-width: 720px) {
-      .form-grid-2 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-    }
-
-    .form-group label {
-      font-size: 12px;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    input,
-    textarea {
-      border-radius: 14px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      padding: 8px 10px;
-      font-size: 13px;
-      background: rgba(249, 250, 251, 0.9);
-      outline: none;
-      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-      font-family: inherit;
-    }
-
-    [data-theme="dark"] input,
-    [data-theme="dark"] textarea {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.5);
-      color: #e5e7eb;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--accent-blue);
-      background: #ffffff;
-      box-shadow: 0 0 0 1px rgba(22, 38, 64, 0.04),
-                  0 0 0 4px rgba(22, 38, 64, 0.14);
-    }
-
-    [data-theme="dark"] input:focus,
-    [data-theme="dark"] textarea:focus {
-      background: #020617;
-    }
-
-    textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
-
-    .status-text {
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .status-text.success {
-      color: #15803d;
-    }
-
-    .status-text.info {
-      color: #1d4ed8;
-    }
-
-    .status-text.muted {
-      color: var(--text-soft);
-      font-size: 11px;
-    }
-
-    /* Exposé-Liste */
-
-    #exposeList {
-      list-style: none;
-      margin-top: 8px;
-      padding-left: 0;
-    }
-
-    #exposeList li {
-      padding: 7px 9px;
-      border-radius: 12px;
-      border: 1px solid rgba(15, 23, 42, 0.06);
-      background: var(--bg-soft);
-      font-size: 13px;
-      cursor: pointer;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    [data-theme="dark"] #exposeList li {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.45);
-    }
-
-    #exposeList li:hover {
-      border-color: var(--accent-blue);
-    }
-
-    #imageList {
-      list-style: none;
-      margin-top: 8px;
-      padding-left: 0;
-      font-size: 13px;
-    }
-
-    #imageList li {
-      margin-bottom: 4px;
-      color: var(--text-soft);
-    }
-
-    /* Upload Zone */
-
-    #dropZone {
-      border-radius: 16px;
-      border: 1px dashed rgba(15, 23, 42, 0.32);
-      padding: 18px;
-      background: rgba(249, 250, 251, 0.9);
-      font-size: 13px;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-      transition: background 0.16s ease, border-color 0.16s ease;
-    }
-
-    [data-theme="dark"] #dropZone {
-      background: #020617;
-      border-color: rgba(148, 163, 184, 0.7);
-    }
-
-    #dropZone.highlight {
-      background: #e5e7eb;
-      border-color: var(--accent-blue);
-    }
-
-    [data-theme="dark"] #dropZone.highlight {
-      background: #0f172a;
-    }
-
-    /* Layout für rechte Spalte */
-
-    .stack {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .stack-small {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    /* Footer */
+    /* FOOTER */
 
     footer {
-      border-top: 1px solid rgba(15, 23, 42, 0.08);
-      padding: 18px 0 26px;
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
       background: linear-gradient(to top, rgba(15, 23, 42, 0.06), transparent);
+      padding: 18px 0 26px;
       font-size: 12px;
       color: var(--text-soft);
     }
 
     [data-theme="dark"] footer {
-      border-top-color: rgba(148, 163, 184, 0.35);
-      background: linear-gradient(to top, rgba(15, 23, 42, 0.5), transparent);
+      border-top-color: rgba(148, 163, 184, 0.5);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.7), transparent);
     }
 
     .footer-inner {
@@ -653,9 +452,14 @@
       flex-wrap: wrap;
     }
 
+    .footer-left {
+      font-size: 12px;
+    }
+
     .footer-links {
       display: flex;
       gap: 14px;
+      font-size: 12px;
     }
 
     .footer-links a:hover {
@@ -667,12 +471,12 @@
         display: none;
       }
 
-      .page-title {
-        font-size: 22px;
+      .hero-card {
+        padding: 24px 18px 22px;
       }
 
-      main {
-        padding-top: 20px;
+      .page-title {
+        font-size: 22px;
       }
     }
   </style>
@@ -682,27 +486,24 @@
   <!-- HEADER -->
   <header class="site-header">
     <div class="container nav">
-      <div class="logo">
-        <div class="logo-symbol">EP</div>
-        <div class="logo-text">
-          <span>ExposePilot</span>
-          <span>Exposé-System für Makler</span>
-        </div>
+      <div class="brand">
+        <div class="brand-name">ExposePilot</div>
+        <div class="brand-sub">Dashboard</div>
       </div>
 
-      <nav class="nav-links">
-        <a href="#" class="is-active">Dashboard</a>
-        <a href="#branding">Branding</a>
-        <a href="#expose">Exposés</a>
-        <a href="#text">Texte</a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="dashboard.html" class="nav-link is-active">Dashboard</a>
+        <a href="exposes.html" class="nav-link">Exposés</a>
+        <a href="settings.html" class="nav-link">Einstellungen</a>
       </nav>
 
       <div class="nav-right">
+        <!-- MODE Toggle -->
         <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Darstellung wechseln">
-          <span class="theme-toggle-label">ON</span>
+          <span class="theme-toggle-label">MODE</span>
           <span class="theme-toggle-track">
             <span class="theme-toggle-knob">
-              <!-- Sonne / Mond als einfache SVGs, keine Emojis -->
+              <!-- Sonne / Mond als SVG, keine Emojis -->
               <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
               </svg>
@@ -713,18 +514,19 @@
           </span>
         </button>
 
+        <!-- User-Pill mit Daten aus /me -->
         <div class="user-pill">
           <div class="user-avatar" id="userAvatar">EP</div>
           <div class="user-meta">
-            <div class="user-name" id="userName">Nutzer</div>
-            <div class="user-email" id="userEmail">–</div>
+            <div class="user-name" id="userName">Konto</div>
+            <div class="user-email" id="userEmail"></div>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Session Check / Begrüßung -->
+  <!-- SESSION CHECK / BEGRÜSSUNG -->
   <script>
     fetch("https://expose-api.black-bar-1b40.workers.dev/me", {
       credentials: "include"
@@ -735,17 +537,24 @@
           window.location.href = "login.html";
           return;
         }
-        const welcome = document.getElementById("welcome");
-        if (welcome) {
-          welcome.textContent = "Willkommen, " + (data.user.company_name || "Ihr Unternehmen");
+
+        const companyName = data.user.company_name || "Ihr Unternehmen";
+        const email = data.user.email || "";
+
+        const welcomeEl = document.getElementById("welcomeHeadline");
+        if (welcomeEl) {
+          welcomeEl.textContent = "Willkommen, " + companyName;
         }
+
         const userNameEl = document.getElementById("userName");
         const userEmailEl = document.getElementById("userEmail");
         const userAvatarEl = document.getElementById("userAvatar");
-        if (userNameEl) userNameEl.textContent = data.user.company_name || "Nutzerkonto";
-        if (userEmailEl) userEmailEl.textContent = data.user.email || "";
-        if (userAvatarEl && data.user.company_name) {
-          const initials = data.user.company_name
+
+        if (userNameEl) userNameEl.textContent = companyName;
+        if (userEmailEl) userEmailEl.textContent = email;
+
+        if (userAvatarEl) {
+          const initials = companyName
             .split(" ")
             .filter(Boolean)
             .map(p => p[0])
@@ -760,173 +569,52 @@
       });
   </script>
 
+  <!-- MAIN -->
   <main>
     <div class="container">
       <header class="page-header">
-        <div class="page-eyebrow">Dashboard</div>
-        <h1 class="page-title" id="welcome">Dashboard wird geladen...</h1>
+        <div class="page-eyebrow">Übersicht</div>
+        <h1 class="page-title" id="welcomeHeadline">Willkommen</h1>
         <p class="page-subline">
-          Exposé-Erstellung, Branding und Inhalte zentral an einem Ort.
+          Startpunkt für die Arbeit mit Ihren Exposés.
         </p>
       </header>
 
-      <section class="grid-main" aria-label="Dashboardbereiche">
-        <!-- Linke Spalte: Branding + Exposé-Setup -->
-        <div class="stack">
-          <!-- Branding -->
-          <section class="card" id="branding">
-            <div class="card-header">
-              <div>
-                <h2 class="card-title">Branding</h2>
-                <p class="card-subtitle">Firmendaten und Farben für Ihre Exposés.</p>
-              </div>
-            </div>
-
-            <form id="brandingForm">
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="company_name">Firmenname</label>
-                  <input type="text" id="company_name">
-                </div>
-                <div class="form-group">
-                  <label for="primary_color">Primärfarbe (HEX)</label>
-                  <input type="text" id="primary_color" placeholder="#000000">
-                </div>
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="secondary_color">Sekundärfarbe (HEX)</label>
-                  <input type="text" id="secondary_color" placeholder="#ffffff">
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
-              <p id="brandingStatus" class="status-text success"></p>
-            </form>
-          </section>
-
-          <!-- Exposé erstellen -->
-          <section class="card" id="expose">
-            <div class="card-header">
-              <div>
-                <h2 class="card-title">Neues Exposé</h2>
-                <p class="card-subtitle">Stammdaten zur Immobilie erfassen.</p>
-              </div>
-            </div>
-
-            <form id="exposeForm">
-              <div class="form-group">
-                <label for="expose_title">Titel</label>
-                <input type="text" id="expose_title">
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="wohnflaeche">Wohnfläche (m²)</label>
-                  <input type="number" id="wohnflaeche">
-                </div>
-                <div class="form-group">
-                  <label for="grundstueck">Grundstück (m²)</label>
-                  <input type="number" id="grundstueck">
-                </div>
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="baujahr">Baujahr</label>
-                  <input type="text" id="baujahr">
-                </div>
-                <div class="form-group">
-                  <label for="zimmer">Zimmer</label>
-                  <input type="number" id="zimmer">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="template_id">Template (1–4)</label>
-                <input type="number" id="template_id" value="1">
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-sm">Exposé anlegen</button>
-              <p id="exposeStatus" class="status-text success"></p>
-            </form>
-
-            <h3 class="section-title-inline">Meine Exposés</h3>
-            <p class="status-text muted">
-              Klicken Sie ein Exposé an, um Bilder und Texte zuzuweisen.
+      <section class="hero" aria-label="Dashboard">
+        <div class="hero-card">
+          <div class="hero-gradient-ring"></div>
+          <div class="hero-inner">
+            <h2 class="hero-headline">Dashboard</h2>
+            <p class="hero-meta">
+              Von hier aus wird ein neues Exposé angelegt. Bestehende Exposés finden Sie im Bereich „Exposés“ in der Navigation.
             </p>
-            <ul id="exposeList"></ul>
-          </section>
-        </div>
-
-        <!-- Rechte Spalte: Upload + Texte -->
-        <div class="stack">
-          <!-- Upload -->
-          <section class="card" aria-label="Bilderupload">
-            <div class="card-header">
-              <div>
-                <h2 class="card-title">Bilder uploaden</h2>
-                <p class="card-subtitle">
-                  Aktives Exposé: <span id="activeExposeId">keins</span>
-                </p>
-              </div>
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" id="newExposeBtn">
+                Neues Exposé erstellen
+              </button>
+              <button class="btn btn-secondary" type="button" id="goExposesBtn">
+                Zu den bestehenden Exposés
+              </button>
             </div>
-
-            <div id="dropZone">
-              Dateien per Drag &amp; Drop ablegen oder Auswahl-Button nutzen.
-            </div>
-
-            <div class="stack-small">
-              <div>
-                <button id="selectImagesBtn" type="button" class="btn btn-ghost btn-sm">Bilder auswählen</button>
-                <input type="file" id="imageFiles" multiple style="display:none">
-                <button id="uploadImagesBtn" type="button" class="btn btn-primary btn-sm">Bilder hochladen</button>
-              </div>
-              <p id="uploadStatus" class="status-text success"></p>
-            </div>
-
-            <h3 class="section-title-inline">Hochgeladene Bilder</h3>
-            <ul id="imageList"></ul>
-          </section>
-
-          <!-- Texte -->
-          <section class="card" id="text">
-            <div class="card-header">
-              <div>
-                <h2 class="card-title">Exposé-Texte</h2>
-                <p class="card-subtitle">Texte automatisch generieren und bearbeiten.</p>
-              </div>
-            </div>
-
-            <button id="generateTextBtn" type="button" class="btn btn-primary btn-sm">
-              Texte generieren für aktives Exposé
-            </button>
-            <p id="gptStatus" class="status-text info"></p>
-
-            <textarea id="gptText"></textarea>
-
-            <div style="margin-top: 10px;">
-              <a href="logout.html" class="btn btn-ghost btn-sm">Logout</a>
-            </div>
-          </section>
+          </div>
         </div>
       </section>
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container footer-inner">
-      <div>ExposePilot Dashboard</div>
+      <div class="footer-left">ExposePilot</div>
       <div class="footer-links">
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
       </div>
     </div>
   </footer>
 </div>
 
-<!-- SCRIPT: Theme + komplette bestehende Logik unverändert übernommen -->
 <script>
   // Theme Handling
   const htmlEl = document.documentElement;
@@ -940,11 +628,11 @@
 
   function initTheme() {
     const stored = localStorage.getItem("exposepilot-theme");
-    if (stored) {
+    if (stored === "light" || stored === "dark") {
       applyTheme(stored);
     } else {
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      applyTheme(prefersDark ? "dark" : "light");
+      // Standard: Light Mode, unabhängig vom System
+      applyTheme("light");
     }
   }
 
@@ -957,225 +645,22 @@
 
   initTheme();
 
-  // ================== AB HIER: Ihr ursprüngliches Dashboard-Skript ==================
+  // Navigation – Buttons
+  const newExposeBtn = document.getElementById("newExposeBtn");
+  const goExposesBtn = document.getElementById("goExposesBtn");
 
-  // Branding
-  async function loadBranding() {
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/get", {
-      credentials: "include"
-    });
-    const data = await res.json();
-    if (!data.logged_in) return;
-
-    document.getElementById("company_name").value = data.user.company_name || "";
-    document.getElementById("primary_color").value = data.user.primary_color || "";
-    document.getElementById("secondary_color").value = data.user.secondary_color || "";
-  }
-
-  document.getElementById("brandingForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const company_name = document.getElementById("company_name").value;
-    const primary_color = document.getElementById("primary_color").value;
-    const secondary_color = document.getElementById("secondary_color").value;
-
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/branding/save", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ company_name, primary_color, secondary_color })
-    });
-
-    const data = await res.json();
-    if (data.ok) {
-      document.getElementById("brandingStatus").textContent = "Gespeichert.";
-    }
-  });
-
-  loadBranding();
-
-  // ===== Exposé + Bilder + GPT =====
-  let activeExposeId = null;
-  let uploadFiles = [];
-
-  // Exposé erstellen
-  document.getElementById("exposeForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const data = {
-      title: document.getElementById("expose_title").value,
-      template_id: Number(document.getElementById("template_id").value),
-      data_json: {
-        wohnflaeche: Number(document.getElementById("wohnflaeche").value),
-        grundstueck: Number(document.getElementById("grundstueck").value),
-        baujahr: document.getElementById("baujahr").value,
-        zimmer: Number(document.getElementById("zimmer").value)
-      }
-    };
-
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/create", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-    const jsonData = await res.json();
-    if (jsonData.ok) {
-      document.getElementById("exposeStatus").textContent = "Exposé gespeichert.";
-      loadExposeList();
-    }
-  });
-
-  async function loadExposeList() {
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/list", {
-      credentials: "include"
-    });
-    const data = await res.json();
-
-    const list = document.getElementById("exposeList");
-    list.innerHTML = "";
-
-    (data.exposes || []).forEach(exp => {
-      const li = document.createElement("li");
-      li.textContent = exp.title + " (ID: " + exp.id + ")";
-      li.style.cursor = "pointer";
-      li.addEventListener("click", () => {
-        setActiveExpose(exp.id);
-      });
-      list.appendChild(li);
+  if (newExposeBtn) {
+    newExposeBtn.addEventListener("click", () => {
+      // Seite für das Anlegen eines neuen Exposés (nur über diesen Button erreichbar)
+      window.location.href = "expose.html";
     });
   }
 
-  function setActiveExpose(id) {
-    activeExposeId = id;
-    document.getElementById("activeExposeId").textContent = id;
-    loadImages();
-    document.getElementById("gptText").value = "";
-    document.getElementById("gptStatus").textContent = "";
-  }
-
-  // Drag & Drop / File select
-  const dropZone = document.getElementById("dropZone");
-  const imageInput = document.getElementById("imageFiles");
-  const selectBtn = document.getElementById("selectImagesBtn");
-  const uploadBtn = document.getElementById("uploadImagesBtn");
-  const uploadStatus = document.getElementById("uploadStatus");
-
-  function renderSelectedFiles() {
-    if (!uploadFiles.length) {
-      uploadStatus.textContent = "";
-      return;
-    }
-    uploadStatus.textContent = uploadFiles.length + " Datei(en) ausgewählt.";
-  }
-
-  dropZone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZone.classList.add("highlight");
-  });
-
-  dropZone.addEventListener("dragleave", (e) => {
-    e.preventDefault();
-    dropZone.classList.remove("highlight");
-  });
-
-  dropZone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropZone.classList.remove("highlight");
-    uploadFiles = Array.from(e.dataTransfer.files);
-    renderSelectedFiles();
-  });
-
-  selectBtn.addEventListener("click", () => {
-    imageInput.click();
-  });
-
-  imageInput.addEventListener("change", (e) => {
-    uploadFiles = Array.from(e.target.files);
-    renderSelectedFiles();
-  });
-
-  uploadBtn.addEventListener("click", async () => {
-    if (!activeExposeId) {
-      alert("Bitte zuerst ein Exposé in der Liste auswählen.");
-      return;
-    }
-    if (!uploadFiles.length) {
-      alert("Keine Dateien ausgewählt.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("expose_id", activeExposeId);
-    uploadFiles.forEach(file => formData.append("files", file));
-
-    uploadStatus.textContent = "Upload läuft...";
-
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/upload", {
-      method: "POST",
-      credentials: "include",
-      body: formData
-    });
-
-    const data = await res.json();
-    if (data.ok) {
-      uploadStatus.textContent = "Upload abgeschlossen (" + data.saved + " Dateien).";
-      uploadFiles = [];
-      imageInput.value = "";
-      loadImages();
-    } else {
-      uploadStatus.textContent = data.error || "Fehler beim Upload.";
-    }
-  });
-
-  async function loadImages() {
-    if (!activeExposeId) return;
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/images?expose_id=" + activeExposeId, {
-      credentials: "include"
-    });
-    const data = await res.json();
-
-    const list = document.getElementById("imageList");
-    list.innerHTML = "";
-
-    (data.images || []).forEach(img => {
-      const li = document.createElement("li");
-      li.textContent = img.filename + " (ID: " + img.id + ")";
-      list.appendChild(li);
+  if (goExposesBtn) {
+    goExposesBtn.addEventListener("click", () => {
+      window.location.href = "exposes.html";
     });
   }
-
-  // GPT Text generieren
-  document.getElementById("generateTextBtn").addEventListener("click", async () => {
-    if (!activeExposeId) {
-      alert("Bitte zuerst ein Exposé in der Liste auswählen.");
-      return;
-    }
-
-    document.getElementById("gptStatus").textContent = "Texte werden generiert...";
-    document.getElementById("gptText").value = "";
-
-    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/generate-text", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ expose_id: activeExposeId })
-    });
-
-    const data = await res.json();
-
-    if (!data.ok) {
-      document.getElementById("gptStatus").textContent = data.error || "Fehler bei der Textgenerierung.";
-      return;
-    }
-
-    document.getElementById("gptStatus").textContent = "Texte generiert.";
-    document.getElementById("gptText").value = data.text;
-  });
-
-  // initial
-  loadExposeList();
 </script>
 </body>
 </html>
