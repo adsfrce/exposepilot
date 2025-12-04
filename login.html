@@ -1,27 +1,465 @@
 <!DOCTYPE html>
-<html>
+<html lang="de" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <title>ExposePilot Login</title>
+  <title>ExposePilot – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-glass-soft: rgba(255, 255, 255, 0.64);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.28);
+      --accent-gold: #caa46a;
+      --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.22);
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --nav-height: 70px;
+    }
+
+    [data-theme="dark"] {
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --bg-glass: rgba(15, 23, 42, 0.94);
+      --bg-glass-soft: rgba(15, 23, 42, 0.78);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.48);
+      --shadow-soft: 0 32px 90px rgba(0, 0, 0, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    body {
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.7)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    [data-theme="dark"] .site-header {
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.9)
+      );
+      border-bottom-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .nav {
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* MODE Toggle */
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 4px 10px 4px 12px;
+      background: var(--bg-glass-soft);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .theme-toggle-label {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .theme-toggle-track {
+      width: 70px;
+      height: 30px;
+      border-radius: 999px;
+      padding: 4px;
+      background: linear-gradient(130deg, #e5e7eb, #9ca3af);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .theme-toggle-track {
+      background: radial-gradient(circle at 0% 0%, #111827, #020617);
+      border-color: rgba(148, 163, 184, 0.9);
+      justify-content: flex-end;
+    }
+
+    .theme-toggle-knob {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #fdf4e3, var(--accent-gold));
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="dark"] .theme-toggle-knob {
+      background: radial-gradient(circle at 30% 0%, #020617, #020617);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.9);
+    }
+
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+
+    .theme-icon-sun {
+      display: block;
+    }
+
+    .theme-icon-moon {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-icon-sun {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-icon-moon {
+      display: block;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 32px 0 40px;
+    }
+
+    .auth-card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 26px 24px 22px;
+      backdrop-filter: blur(24px);
+    }
+
+    .auth-header {
+      margin-bottom: 18px;
+    }
+
+    .auth-title {
+      font-family: "Playfair Display", serif;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .auth-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    input {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 8px 10px;
+      font-size: 13px;
+      background: rgba(249, 250, 251, 0.9);
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+      font-family: inherit;
+    }
+
+    [data-theme="dark"] input {
+      background: #020617;
+      border-color: rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+    }
+
+    input:focus {
+      border-color: #111827;
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04),
+                  0 0 0 4px rgba(15, 23, 42, 0.14);
+    }
+
+    [data-theme="dark"] input:focus {
+      background: #020617;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: transparent;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 0% 0%, #e5d7b5, #111827);
+      color: #f9fafb;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.32);
+      margin-top: 4px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 44px rgba(15, 23, 42, 0.48);
+    }
+
+    .auth-footer {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .auth-footer a {
+      text-decoration: underline;
+    }
+
+    .status-error {
+      font-size: 12px;
+      color: #b91c1c;
+      margin-top: 8px;
+    }
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.06), transparent);
+      padding: 16px 0 22px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    [data-theme="dark"] footer {
+      border-top-color: rgba(148, 163, 184, 0.5);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.7), transparent);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+  </style>
 </head>
 <body>
-  <h1>ExposePilot – Login</h1>
+<div class="page">
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-name">ExposePilot</div>
+        <div class="brand-sub">Login</div>
+      </div>
 
-  <form id="loginForm">
-    <label>Email:</label><br>
-    <input type="email" id="email" required><br><br>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Darstellung wechseln">
+          <span class="theme-toggle-label">MODE</span>
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-knob">
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
+              </svg>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16.5 3a7.5 7.5 0 1 0 4.5 13.5A8 8 0 0 1 16.5 3z" fill="#e5e7eb"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <label>Passwort:</label><br>
-    <input type="password" id="password" required><br><br>
+  <main>
+    <div class="container">
+      <section class="auth-card" aria-label="Login">
+        <header class="auth-header">
+          <h1 class="auth-title">Anmeldung</h1>
+          <p class="auth-subtitle">
+            Bitte melden Sie sich mit Ihren Zugangsdaten an.
+          </p>
+        </header>
 
-    <button type="submit">Login</button>
-  </form>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">E-Mail-Adresse</label>
+            <input type="email" id="email" required autocomplete="email">
+          </div>
 
-  <p id="error" style="color:red;"></p>
+          <div class="form-group">
+            <label for="password">Passwort</label>
+            <input type="password" id="password" required autocomplete="current-password">
+          </div>
 
-  <p>Noch kein Account? <a href="register.html">Jetzt registrieren</a></p>
+          <button type="submit" class="btn btn-primary">Login</button>
 
-  <script>
+          <p id="error" class="status-error"></p>
+
+          <div class="auth-footer">
+            <span>Noch kein Konto?</span>
+            <a href="register.html">Jetzt registrieren</a>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>ExposePilot</div>
+      <div class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Theme Handling
+  const htmlEl = document.documentElement;
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+  function applyTheme(theme) {
+    if (!["light", "dark"].includes(theme)) theme = "light";
+    htmlEl.setAttribute("data-theme", theme);
+    localStorage.setItem("exposepilot-theme", theme);
+  }
+
+  function initTheme() {
+    const stored = localStorage.getItem("exposepilot-theme");
+    if (stored === "light" || stored === "dark") {
+      applyTheme(stored);
+    } else {
+      applyTheme("light");
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const current = htmlEl.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+  }
+
+  initTheme();
+
+  // Login-Logik wie bisher
   document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -38,12 +476,13 @@
     const data = await res.json();
 
     if (!res.ok || !data.ok) {
-      document.getElementById("error").textContent = data.error || "Login fehlgeschlagen.";
+      document.getElementById("error").textContent =
+        data.error || "Login fehlgeschlagen.";
       return;
     }
 
     window.location.href = "dashboard.html";
   });
-  </script>
+</script>
 </body>
 </html>
