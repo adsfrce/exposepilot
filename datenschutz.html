@@ -1,1 +1,440 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot – Datenschutz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-glass-soft: rgba(255, 255, 255, 0.64);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.28);
+      --accent-gold: #caa46a;
+      --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.22);
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --nav-height: 70px;
+    }
+
+    [data-theme="dark"] {
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --bg-glass: rgba(15, 23, 42, 0.94);
+      --bg-glass-soft: rgba(15, 23, 42, 0.78);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.48);
+      --shadow-soft: 0 32px 90px rgba(0, 0, 0, 0.9);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    body { line-height: 1.6; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.7)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    [data-theme="dark"] .site-header {
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.9)
+      );
+      border-bottom-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .nav {
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 4px 10px 4px 12px;
+      background: var(--bg-glass-soft);
+      cursor: pointer;
+      font-size: 11px;
+      backdrop-filter: blur(14px);
+    }
+
+    .theme-toggle-label {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .theme-toggle-track {
+      width: 70px;
+      height: 30px;
+      border-radius: 999px;
+      padding: 4px;
+      background: linear-gradient(130deg, #e5e7eb, #9ca3af);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .theme-toggle-track {
+      background: radial-gradient(circle at 0% 0%, #111827, #020617);
+      justify-content: flex-end;
+    }
+
+    .theme-toggle-knob {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #fdf4e3, var(--accent-gold));
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="dark"] .theme-toggle-knob {
+      background: radial-gradient(circle at 30% 0%, #020617, #020617);
+    }
+
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: block; }
+
+    main {
+      flex: 1;
+      padding: 40px 0 40px;
+    }
+
+    .legal-card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 26px 24px 28px;
+      backdrop-filter: blur(24px);
+    }
+
+    .legal-title {
+      font-family: "Playfair Display", serif;
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .legal-section {
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .legal-section h2 {
+      font-size: 15px;
+      margin-top: 22px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .legal-section p {
+      margin-bottom: 6px;
+    }
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.06), transparent);
+      padding: 16px 0 22px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    [data-theme="dark"] footer {
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.7), transparent);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-name">ExposePilot</div>
+        <div class="brand-sub">Datenschutz</div>
+      </div>
+
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggleBtn" type="button">
+          <span class="theme-toggle-label">MODE</span>
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-knob">
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
+              </svg>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24">
+                <path d="M16.5 3a7.5 7.5 0 1 0 4.5 13.5A8 8 0 0 1 16.5 3z" fill="#e5e7eb"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="legal-card">
+        <h1 class="legal-title">Datenschutzerklärung</h1>
+
+        <div class="legal-section">
+
+          <h2>1. Allgemeine Hinweise</h2>
+          <p>
+            Der Schutz Ihrer personenbezogenen Daten hat für uns höchste Priorität.
+            In dieser Datenschutzerklärung informieren wir Sie gemäß DSGVO und dem TTDSG über Art,
+            Umfang, Zweck und Rechtsgrundlagen der Verarbeitung personenbezogener Daten bei Nutzung
+            unseres Tools exposepilot.de. Rechtsstand: Dezember 2025.
+          </p>
+
+          <h2>2. Verantwortlicher im Sinne der DSGVO</h2>
+          <p>DM Management – AdsForce</p>
+          <p>David Mißberger</p>
+          <p>Krautgärten 12</p>
+          <p>76744 Wörth am Rhein</p>
+          <p>Deutschland</p>
+          <p>E-Mail: <a href="mailto:hello@ads-force.com">hello@ads-force.com</a></p>
+          <p>Telefon: +49 155 63735213</p>
+
+          <h2>3. Kategorien personenbezogener Daten & Verarbeitungszwecke</h2>
+
+          <h3 style="margin-top:12px;">3.1 Registrierung / Login</h3>
+          <p>Vor- und Nachname, E-Mail-Adresse, verschlüsseltes Passwort, Firmendaten, Nutzungsdaten.</p>
+
+          <h3>3.2 Exposé-Erstellung</h3>
+          <p>
+            Unternehmensbezeichnung, Kontaktdaten, Objektinformationen, Medien (Texte, Bilder).
+            Verarbeitung ausschließlich zur Exposé-Funktionalität.
+          </p>
+
+          <h3>3.3 Zahlungsdaten</h3>
+          <p>
+            Rechnungsadresse, Zahlungsmethode, Zahlungsstatus.  
+            Zahlungsdienstleister: Stripe (siehe Punkt 5).
+          </p>
+
+          <h3>3.4 Technische Daten</h3>
+          <p>
+            IP-Adresse (gekürzt/anonymisiert), Browserdaten, Geräteinformationen, Zugriffsdaten.
+            Verarbeitung u. a. durch Cloudflare.
+          </p>
+
+          <h2>4. Rechtsgrundlagen</h2>
+          <p>Art. 6 Abs. 1 lit. b DSGVO – Vertrag / Registrierung</p>
+          <p>Art. 6 Abs. 1 lit. f DSGVO – Berechtigtes Interesse</p>
+          <p>Art. 6 Abs. 1 lit. a DSGVO – Einwilligung (Cookies, Analyse)</p>
+          <p>Art. 6 Abs. 1 lit. c DSGVO – Gesetzliche Pflichten</p>
+
+          <h2>5. Zahlungsabwicklung über Stripe</h2>
+          <p>
+            Dienstleister: Stripe Payments Europe Ltd., Dublin.  
+            Verarbeitet: Name, Rechnungsadresse, Zahlungsinfos, IP-Adresse, Geräteinfos.  
+            Eigener Verantwortlicher gem. Art. 4 Nr. 7 DSGVO.  
+            Datenschutz: <a href="https://stripe.com/de/privacy" target="_blank">Stripe Privacy</a>
+          </p>
+
+          <h2>6. Speicherung von Kontodaten</h2>
+          <p>
+            Speicherung von Konten, Firmendaten, Zahlungsstatus, Exposé-Historie, Logins.  
+            Passwörter ausschließlich gehasht (bcrypt/argon2).  
+            Löschung auf Anfrage gemäß Art. 17 DSGVO.
+          </p>
+
+          <h2>7. Cookies, Tracking & Consent</h2>
+          <p>Essenziell: Sicherheits-/Session-Cookies.</p>
+          <p>Mit Einwilligung: Analyse-/Marketing-Cookies.</p>
+          <p>Rechtsgrundlagen: Art. 6 Abs. 1 lit. f DSGVO, TTDSG §25 Abs. 2 / lit. a DSGVO.</p>
+
+          <h2>8. Hosting, Deployment & Sicherheit</h2>
+
+          <h3>8.1 Cloudflare</h3>
+          <p>
+            Dienste: CDN, DDoS-Schutz, DNS, Performance.  
+            Verarbeitung technischer Daten.  
+            AVV vorhanden.  
+            Datenschutz: <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>
+          </p>
+
+          <h3>8.2 GitHub Pages</h3>
+          <p>
+            Hosting des statischen Web-Frontends.  
+            Verarbeitet: IP-Adresse, Browserdaten, Zeitstempel.  
+            AVV vorhanden.  
+            Datenschutz: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement">GitHub Privacy</a>
+          </p>
+
+          <h2>9. Weitergabe von Daten</h2>
+          <p>
+            Nur an: Stripe, Cloudflare, GitHub, technische Dienstleister.  
+            Keine Weitergabe an Werbenetzwerke.
+          </p>
+
+          <h2>10. Speicherdauer</h2>
+          <p>Konto: bis Löschung</p>
+          <p>Zahlungsdaten: 10 Jahre</p>
+          <p>Exposés: bis Löschung durch Nutzer</p>
+          <p>Server-Logs: max. 30 Tage</p>
+
+          <h2>11. Rechte betroffener Personen</h2>
+          <p>Auskunft · Berichtigung · Löschung · Einschränkung · Übertragbarkeit · Widerspruch · Beschwerde</p>
+          <p>Anfragen an: <a href="mailto:hello@ads-force.com">hello@ads-force.com</a></p>
+
+          <h2>12. Datensicherheit</h2>
+          <p>
+            TLS-Verschlüsselung, Zugriffsbeschränkungen, gehashte Passwörter, Backups,
+            Cloudflare-Schutzmechanismen.
+          </p>
+
+          <h2>13. Änderungen dieser Erklärung</h2>
+          <p>
+            Änderungen vorbehalten; jeweils aktuelle Version auf exposepilot.de abrufbar.
+          </p>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>ExposePilot</div>
+      <div class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const htmlEl = document.documentElement;
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+  function applyTheme(theme) {
+    if (!["light", "dark"].includes(theme)) theme = "light";
+    htmlEl.setAttribute("data-theme", theme);
+    localStorage.setItem("exposepilot-theme", theme);
+  }
+
+  function initTheme() {
+    const stored = localStorage.getItem("exposepilot-theme");
+    if (stored === "light" || stored === "dark") {
+      applyTheme(stored);
+    } else {
+      applyTheme("light");
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const current = htmlEl.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+  }
+
+  initTheme();
+</script>
+
+</body>
+</html>
