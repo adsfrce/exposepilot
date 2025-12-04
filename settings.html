@@ -673,6 +673,7 @@
         const companyName = user.company_name || "Ihr Unternehmen";
         const email = user.email || "";
 
+        // Header / User-Pill
         const userNameEl = document.getElementById("userName");
         const userEmailEl = document.getElementById("userEmail");
         const userAvatarEl = document.getElementById("userAvatar");
@@ -680,9 +681,10 @@
         if (userNameEl) userNameEl.textContent = companyName;
         if (userEmailEl) userEmailEl.textContent = email;
 
-        // Logo aus /me, falls vorhanden
+        // Logo oben + Preview rechts
         if (user.logo_url) {
           currentLogoUrl = user.logo_url;
+
           if (userAvatarEl) {
             userAvatarEl.innerHTML = "";
             const img = document.createElement("img");
@@ -690,6 +692,7 @@
             img.alt = "Logo";
             userAvatarEl.appendChild(img);
           }
+
           const logoPreview = document.getElementById("logoPreview");
           if (logoPreview) {
             logoPreview.innerHTML = "";
@@ -709,22 +712,38 @@
           if (userAvatarEl) userAvatarEl.textContent = initials || "EP";
         }
 
-        // Firmendaten vorbefüllen (soweit vorhanden)
-        const companyNameInput = document.getElementById("company_name");
-        const emailInput = document.getElementById("company_email");
-        const phoneInput = document.getElementById("company_phone");
+        // Alle Firmendaten-Felder aus /me vorbefüllen, wenn vorhanden
+        const fieldMap = [
+          ["contact_person",  "contact_person"],
+          ["company_name",    "company_name"],
+          ["tax_id",          "tax_id"],
+          ["street",          "street"],
+          ["postal_code",     "postal_code"],
+          ["city",            "city"],
+          ["country",         "country"],
+          ["address_extra",   "address_extra"],
+          ["email",           "company_email"],
+          ["phone",           "company_phone"],
+          ["hrb_number",      "hrb_number"],
+          ["register_court",  "register_court"]
+        ];
 
-        if (companyNameInput && user.company_name) {
-          companyNameInput.value = user.company_name;
-        }
-        if (emailInput && user.email) {
-          emailInput.value = user.email;
-        }
-        if (phoneInput && user.phone) {
-          phoneInput.value = user.phone;
+        fieldMap.forEach(([userKey, inputId]) => {
+          const el = document.getElementById(inputId);
+          if (!el) return;
+          const val = user[userKey];
+          if (typeof val === "string" && val.length > 0) {
+            el.value = val;
+          }
+        });
+
+        // Default Land, falls nichts in DB
+        const countryInput = document.getElementById("country");
+        if (countryInput && !countryInput.value) {
+          countryInput.value = "Deutschland";
         }
 
-        // Branding laden
+        // Branding laden (Farbwerte)
         loadBranding();
       })
       .catch(() => {
