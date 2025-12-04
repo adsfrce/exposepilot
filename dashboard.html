@@ -72,7 +72,7 @@
 
   <hr>
 
-  <h2>Meine Exposés (klicken, um Bilder hochzuladen)</h2>
+  <h2>Meine Exposés (klicken, um Bilder & Text zu bearbeiten)</h2>
   <ul id="exposeList"></ul>
 
   <hr>
@@ -93,6 +93,15 @@
 
   <h3>Hochgeladene Bilder</h3>
   <ul id="imageList"></ul>
+
+  <hr>
+
+  <!-- GPT TEXTE -->
+  <h2>Exposé-Text (GPT)</h2>
+  <button id="generateTextBtn">Texte generieren für aktives Exposé</button>
+  <p id="gptStatus" style="color:blue;"></p>
+  <br>
+  <textarea id="gptText" style="width:100%; max-width:800px; height:300px;"></textarea>
 
   <p><a href="logout.html">Logout</a></p>
 
@@ -133,7 +142,7 @@
 
   loadBranding();
 
-  // ===== Exposé + Bilder =====
+  // ===== Exposé + Bilder + GPT =====
   let activeExposeId = null;
   let uploadFiles = [];
 
@@ -175,7 +184,7 @@
     const list = document.getElementById("exposeList");
     list.innerHTML = "";
 
-    data.exposes.forEach(exp => {
+    (data.exposes || []).forEach(exp => {
       const li = document.createElement("li");
       li.textContent = exp.title + " (ID: " + exp.id + ")";
       li.style.cursor = "pointer";
@@ -190,6 +199,8 @@
     activeExposeId = id;
     document.getElementById("activeExposeId").textContent = id;
     loadImages();
+    document.getElementById("gptText").value = "";
+    document.getElementById("gptStatus").textContent = "";
   }
 
   // Drag & Drop / File select
@@ -282,6 +293,34 @@
       list.appendChild(li);
     });
   }
+
+  // GPT Text generieren
+  document.getElementById("generateTextBtn").addEventListener("click", async () => {
+    if (!activeExposeId) {
+      alert("Bitte zuerst ein Exposé in der Liste auswählen.");
+      return;
+    }
+
+    document.getElementById("gptStatus").textContent = "Texte werden generiert...";
+    document.getElementById("gptText").value = "";
+
+    const res = await fetch("https://expose-api.black-bar-1b40.workers.dev/expose/generate-text", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expose_id: activeExposeId })
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      document.getElementById("gptStatus").textContent = data.error || "Fehler bei der Textgenerierung.";
+      return;
+    }
+
+    document.getElementById("gptStatus").textContent = "Texte generiert.";
+    document.getElementById("gptText").value = data.text;
+  });
 
   // initial
   loadExposeList();
