@@ -1,1 +1,467 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>ExposePilot – AGB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: radial-gradient(circle at top, #f9fafb 0, #e5e7eb 32%, #d1d5e7 100%);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-glass-soft: rgba(255, 255, 255, 0.64);
+      --text-main: #111827;
+      --text-soft: #6b7280;
+      --border-subtle: rgba(148, 163, 184, 0.28);
+      --accent-gold: #caa46a;
+      --shadow-soft: 0 28px 70px rgba(15, 23, 42, 0.22);
+      --radius-lg: 26px;
+      --radius-pill: 999px;
+      --nav-height: 70px;
+    }
+
+    [data-theme="dark"] {
+      --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      --bg-glass: rgba(15, 23, 42, 0.94);
+      --bg-glass-soft: rgba(15, 23, 42, 0.78);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.48);
+      --shadow-soft: 0 32px 90px rgba(0, 0, 0, 0.9);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    body { line-height: 1.6; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.7)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    [data-theme="dark"] .site-header {
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.9)
+      );
+      border-bottom-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .nav {
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 4px 10px 4px 12px;
+      background: var(--bg-glass-soft);
+      cursor: pointer;
+      font-size: 11px;
+      backdrop-filter: blur(14px);
+    }
+
+    .theme-toggle-label {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .theme-toggle-track {
+      width: 70px;
+      height: 30px;
+      border-radius: 999px;
+      padding: 4px;
+      background: linear-gradient(130deg, #e5e7eb, #9ca3af);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .theme-toggle-track {
+      background: radial-gradient(circle at 0% 0%, #111827, #020617);
+      justify-content: flex-end;
+    }
+
+    .theme-toggle-knob {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #fdf4e3, var(--accent-gold));
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="dark"] .theme-toggle-knob {
+      background: radial-gradient(circle at 30% 0%, #020617, #020617);
+    }
+
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .theme-icon-moon { display: none; }
+    [data-theme="dark"] .theme-icon-sun { display: none; }
+    [data-theme="dark"] .theme-icon-moon { display: block; }
+
+    main {
+      flex: 1;
+      padding: 40px 0 40px;
+    }
+
+    .legal-card {
+      border-radius: var(--radius-lg);
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 26px 24px 28px;
+      backdrop-filter: blur(24px);
+    }
+
+    .legal-title {
+      font-family: "Playfair Display", serif;
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .legal-section {
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .legal-section h2 {
+      font-size: 15px;
+      margin-top: 22px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .legal-section p {
+      margin-bottom: 6px;
+    }
+
+    .legal-sub {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--text-soft);
+    }
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.06), transparent);
+      padding: 16px 0 22px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    [data-theme="dark"] footer {
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.7), transparent);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-name">ExposePilot</div>
+        <div class="brand-sub">AGB</div>
+      </div>
+
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggleBtn" type="button">
+          <span class="theme-toggle-label">MODE</span>
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-knob">
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" fill="#facc15"></circle>
+              </svg>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24">
+                <path d="M16.5 3a7.5 7.5 0 1 0 4.5 13.5A8 8 0 0 1 16.5 3z" fill="#e5e7eb"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="legal-card">
+        <h1 class="legal-title">Allgemeine Geschäftsbedingungen (AGB)</h1>
+
+        <div class="legal-section">
+
+          <h2>1. Geltungsbereich</h2>
+          <p>
+            Diese AGB gelten für alle digitalen Dienste und Funktionen der Plattform exposepilot.de,
+            betrieben von DM Management (im Folgenden „wir“). Abweichende Bedingungen des Kunden
+            finden keine Anwendung, es sei denn, wir stimmen ihnen ausdrücklich schriftlich zu.
+          </p>
+
+          <h2>2. Vertragspartner</h2>
+          <p>DM Management</p>
+          <p>Krautgärten 12</p>
+          <p>76744 Wörth am Rhein</p>
+          <p>Deutschland</p>
+          <p>E-Mail: <a href="mailto:hello@ads-force.com">hello@ads-force.com</a></p>
+          <p>Telefon: +49 155 63735213</p>
+          <p>Inhaber: David Mißberger</p>
+
+          <h2>3. Vertragsabschluss</h2>
+          <p>Ein Vertrag kommt zustande durch:</p>
+          <p>• Registrierung eines Nutzerkontos,</p>
+          <p>• Abschluss eines kostenpflichtigen Plans,</p>
+          <p>• Zahlung über Stripe oder andere angebotene Zahlungswege.</p>
+          <p>
+            Mit Nutzung der Plattform akzeptiert der Kunde diese AGB vollumfänglich.
+          </p>
+
+          <h2>4. Leistungen von exposepilot.de</h2>
+          <p>
+            exposepilot.de bietet ein automatisiertes Tool zur Erstellung von Immobilien-Exposés,
+            das teilweise oder vollständig auf KI-Technologie (u. a. ChatGPT / GPT-Modelle) basiert.
+          </p>
+          <p>
+            Der Funktionsumfang kann jederzeit erweitert, eingeschränkt oder angepasst werden.
+            Ein Anspruch auf bestimmte Funktionalitäten besteht nicht.
+          </p>
+
+          <h2>5. Wichtiger Hinweis: KI-generierte Inhalte / Haftungsfreistellung</h2>
+
+          <p class="legal-sub">5.1 Keine Garantie für Richtigkeit oder Vollständigkeit</p>
+          <p>
+            Die durch exposepilot.de generierten Exposés entstehen vollautomatisch aus
+            Nutzereingaben, hochgeladenen Daten und KI-generierten Formulierungen.
+            Wir übernehmen keine Haftung für sachliche Fehler, fehlerhafte Flächenangaben,
+            unzutreffende Objektbeschreibungen, Auslassungen, Marktwertberechnungen,
+            rechtliche oder technische Fehler sowie Auswirkungen auf Verkaufspreise oder Vermarktungserfolg.
+          </p>
+          <p>
+            Der Nutzer ist allein verantwortlich, alle Inhalte vor Verwendung zu prüfen,
+            zu korrigieren und freizugeben.
+          </p>
+
+          <p class="legal-sub">5.2 Keine rechtliche oder fachliche Beratung</p>
+          <p>
+            Die erzeugten Inhalte stellen keine Immobilienbewertung, keine Rechtsberatung,
+            keine steuerliche Beratung und keine fachliche Empfehlung dar.
+          </p>
+
+          <p class="legal-sub">5.3 Haftungsfreistellung</p>
+          <p>
+            Der Nutzer stellt uns von sämtlichen Ansprüchen frei, die Dritte wegen falscher Angaben,
+            Rechtsverletzungen, Schäden durch Nutzung der Exposés oder fehlerhafte
+            Immobilieninformationen geltend machen.
+          </p>
+
+          <h2>6. Zahlungsbedingungen</h2>
+          <p>
+            Leistungen werden ausschließlich über Stripe oder vergleichbare Anbieter abgerechnet.
+            Der Zugang zu Funktionen erfolgt erst nach bestätigtem Zahlungseingang.
+          </p>
+          <p>
+            Rückbuchungen oder Zahlungsausfälle führen zur sofortigen Sperrung des Accounts.
+            Entstehende Gebühren durch Rücklastschriften trägt der Kunde.
+          </p>
+
+          <h2>7. Verfügbarkeit der Plattform</h2>
+          <p>
+            Wir schulden keine durchgehende Verfügbarkeit der Dienste.
+            Kurzzeitige Ausfälle, Wartungen, Fehler oder Einschränkungen stellen keinen Mangel dar.
+            Ein Anspruch auf Erstattung oder Schadenersatz wegen Nichtverfügbarkeit besteht nicht.
+          </p>
+
+          <h2>8. Haftungsausschluss</h2>
+
+          <p class="legal-sub">8.1 Allgemeine Haftung</p>
+          <p>
+            Wir haften nur bei vorsätzlicher oder grob fahrlässiger Pflichtverletzung.
+            Eine Haftung für einfache Fahrlässigkeit wird ausgeschlossen.
+          </p>
+          <p>
+            Keine Haftung für entgangene Gewinne, Umsatzverluste, Immobilienwertverluste,
+            fehlerhafte Vermarktung, Datenverlust, Nutzungsausfälle oder Ergebnisse
+            der KI-Generierung.
+          </p>
+
+          <p class="legal-sub">8.2 Externe Systeme</p>
+          <p>
+            Wir haften nicht für Störungen oder Fehler von Stripe, Cloudflare, GitHub,
+            KI-API-Anbietern (z. B. OpenAI) oder anderen Hosting- und Infrastruktur-Dienstleistern.
+            Ebenso keine Haftung für nachträgliche Änderungen durch Dritte.
+          </p>
+
+          <p class="legal-sub">8.3 Höhere Gewalt</p>
+          <p>
+            Unvorhersehbare Ereignisse (höhere Gewalt) entbinden uns für die Dauer der Störung
+            von der Leistungspflicht.
+          </p>
+
+          <h2>9. Nutzerverantwortung</h2>
+          <p>
+            Der Nutzer verpflichtet sich, eigene Inhalte vor Nutzung oder Veröffentlichung zu prüfen,
+            keine rechtswidrigen, irreführenden oder unzutreffenden Daten einzugeben und
+            das Tool nicht missbräuchlich einzusetzen.
+          </p>
+          <p>
+            Der Nutzer trägt allein das Risiko der Exposé-Verwendung im geschäftlichen Kontext.
+          </p>
+
+          <h2>10. Rechte an Inhalten und Nutzung</h2>
+          <p>
+            KI-generierte Exposés dürfen vom Nutzer frei verwendet werden.
+            Wir behalten uns das Recht vor, anonymisierte Nutzungsdaten zur technischen
+            Optimierung auszuwerten.
+          </p>
+
+          <h2>11. Kündigung / Account-Löschung</h2>
+          <p>
+            Nutzer können ihr Konto jederzeit löschen. Bereits gezahlte Gebühren werden
+            nicht erstattet. Wir können Konten bei Verstößen gegen diese AGB jederzeit
+            sperren oder löschen.
+          </p>
+
+          <h2>12. Schlussbestimmungen</h2>
+          <p>
+            Es gilt deutsches Recht. Gerichtsstand ist Wörth am Rhein.
+            Sollten einzelne Klauseln unwirksam sein, bleibt der Rest der AGB gültig.
+            Änderungen dieser AGB können jederzeit erfolgen; gültig ist stets die veröffentlichte Version.
+          </p>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>ExposePilot</div>
+      <div class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const htmlEl = document.documentElement;
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+
+  function applyTheme(theme) {
+    if (!["light", "dark"].includes(theme)) theme = "light";
+    htmlEl.setAttribute("data-theme", theme);
+    localStorage.setItem("exposepilot-theme", theme);
+  }
+
+  function initTheme() {
+    const stored = localStorage.getItem("exposepilot-theme");
+    applyTheme(stored === "dark" ? "dark" : "light");
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const isDark = htmlEl.getAttribute("data-theme") === "dark";
+      applyTheme(isDark ? "light" : "dark");
+    });
+  }
+
+  initTheme();
+</script>
+</body>
+</html>
